@@ -1,0 +1,409 @@
+<!--***************************************************************************************
+Distribution of this tool or file to any external party is not permitted.
+All information and formulas in this tool are strictly confidential. 
+Only screenshots (screen captured image) of calculation results can be shared externally. 
+All rights reserved. Copyright © 2017 Richard Inniss
+****************************************************************************************-->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title class="title">Pricing Page</title>
+  <link rel="stylesheet" href="styles/style.css" />
+  <link rel="icon" type="image/x-icon" href="https://aiot-consulting.github.io/Static-Assets/favicon.ico">
+</head>
+<body onload="calculate()">
+  <h1>DMB ROI CALCULATOR </h1>
+  <h2>Capital Expendatures and Operating Conditions</h2>
+<div class="tab">
+  <button class="tab_off" id="tab1">Calculator (Month)</button>
+  <button class="tab_off" id="tab2">Calculator (Margin)</button>
+  <button class="tab_on" id="tab3">Pricing Data</button>
+</div>
+<table class="tg">
+  <tr>
+    <td class="logo" rowspan="2"><img src="images/AIoT_Logo6.png" alt="" style="width: 150px;"></td>
+    <td class="inst_header" colspan="5">INSTRUCTIONS</td>
+  </tr>
+  <tr>
+    <td class="inst_content" colspan="5">1-  Select approximate value of td annual cost for all  current static menu board translites,<br>
+      2- Monthly maintenance and support is based on either Tier 1 or Tier two Premium Services<br>
+      3- Kw/Hr are based on average hydro rate selected in the pricing data tab, LCD Pannels & Media Engines<br> 
+      4- Current static translite backlight menu board estimated 210 watts has been subtracted from this
+    </td>
+  </tr>
+
+  <tr>
+    <td class="subtle_1" colspan="2">CapEx/Upfront Costs/Lifespan</td>
+    <td class="subtle_1" colspan="2">Recurring Costs</td>
+    <td class="subtle_1" colspan="2">Store Operations Data</td>
+  </tr>
+  <tr>
+    <td class="sliders">
+      <legend for="lifespan">Equipment Lifespan</legend>
+      <input type="range" name="lifespan" id="lifespan" min="3" max="10" step="1" value="7">
+    </td>
+    <td class="item_slider"><div><span id="#lifespan"></span> years</div></td>
+    <td class="softype" colspan="2">
+      <fieldset id="typeSoft" class="radiofielset">
+        <legend for="softype">Software Type:</legend>
+        <input type="radio" name="softype" id="saas" checked>
+        <label for="saas">SaaS</label>
+        <input type="radio" name="softype" id="license">
+        <label for="license">License</label>
+      </fieldset>
+    </td>
+    <td class="sliders">
+      <legend for="screens">Number of screens:</legend>
+      <input type="range" name="screens" id="screens" min="1" max="20" value="3">
+    </td>
+    <td class="item_slider"><div><span id="#screens"></span></div></td>
+    </tr>  
+  </tr>
+    <tr>
+    <td class="subtle_2" colspan="2">Hardware Costs</td>
+    <td class="item">
+      <div id="soft_type"></div>
+    </td>
+    <td class="item_cost">$<input type="number" name="softcost" id="softcost" value="0"></td>
+    <td class="sliders">
+      <legend for="days">Days per week open:</legend>
+      <input type="range" name="days" id="days" min="1" max="7" value="1">
+    </td>
+    <td class="item_slider"><div><span id="#days"></span></div></td>
+    
+  </tr>
+    <tr>
+    <td class="item">Display Cost (per/unit):</td>
+    <td class="item_cost">$<input type="number" name="screencost" id="screencost" placeholder="0" value="0" pattern="\d*"></td>
+    <td class="item">Monthly Support Fee (if apllicable):</td>
+    <td class="item_cost">$<input type="number" name="supcost" id="supcost" value="0"></td>
+    <td class="sliders">
+      <legend for="hours">Hours per week open:</legend>
+      <input type="range" name="hours" id="hours" min="1" max="24" value="1">
+    </td>
+    <td class="item_slider"><div><span id="#hours"></span></div></td>
+
+  </tr>
+
+  <tr>
+    <td class="item">Media Player Cost (per unit):</td>
+    <td class="item_cost">$<input type="number" name="mplayercost" id="mplayercost" value="0"></td>
+    <td class="item">Monthly Warranty Fee (if applcable):</td>
+    <td class="item_cost">$<input type="number" name="warcost" id="warcost" value="0"></td>
+    <td class="item">Annual Revenue:</td>
+    <td class="item">cell</td>
+  </tr>
+  <tr>
+    <td class="item">Mounts/Cable/Other (per display):</td>
+    <td class="item_cost">$<input type="number" name="mcocost" id="mcocost" value="0"></td>
+    <td class="item">Monthly Creative Cost (if applicable):</td>
+    <td class="item_cost">$<input type="number" name="crecost" id="crecost" value="0"></td>
+    <td class="item">Average Check:</td>
+    <td class="item">cell</td>
+  </tr>
+  <tr>
+    <td class="subtle_2" colspan="2">Installation/Labor/Other</td>
+    <td class="subtle_2" colspan="2">Electrical Costs</td>
+    <td class="item">Average Margin:</td>
+    <td class="tg-0pky"></td>
+  </tr>
+  <tr>
+    <td class="item">Installation Labor Cost:</td>
+    <td class="item_cost">$<input type="number" name="inlacost" id="inlacost" value="0"></td>
+    <td class="sliders">
+      <legend for="hydro">Electricity Costs (Kw/hr):</legend>
+      <input type="range" name="hydro" id="hydro" min="0.00" max="0.80" step="0.01" value="0">
+    </td>
+    <td class="item_slider"><div><span id="#hydro"></span>&#162;</div></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    
+  </tr>
+  <tr>
+    <td class="item">Electrical Labor Cost:</td>
+    <td class="item_cost">$<input type="number" name="elacost" id="elacost" value="0"></td>
+    <td class="item">Display Consumption (watts):</td>
+    <td class="item_cost"><input type="number" name="scpower" id="scpower" value="0"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+  </tr>
+  <tr>
+    <td class="item">
+      <div id="other_text"></div>
+    </td>
+    <td class="item_cost">$<input type="number" name="othcost" id="othcost" value="0"></td>
+    <td class="item">Media Player Consumption (watts):</td>
+    <td class="item_cost"><input type="number" name="mppower" id="mppower" value="0"></td>
+    <td class="tg-0pky"></td>
+    <td class="tg-0pky"></td>
+    
+  </tr>
+
+  <tr>
+    <td class="subtle_1" colspan="2">Store Operating<br>Conditions</td>
+    <td class="subtle_1" colspan="2">Cost<br>Summary</td>
+    <td class="subtle_required" rowspan="2" colspan="2">Additional Sales Require<br>Over Period</td>
+  </tr>
+  <tr>
+    <td class="item">cell</td>
+    <td class="item">cell</td>
+    <td class="tot_title">Up-Front Cost:</td>
+    <td class="totals"><span id="capex_tot">$...</span></td>
+
+  </tr>
+  <tr>
+    <td class="item">cell</td>
+    <td class="item">cell</td>
+    <td class="tot_title">Monthly Operating Cost:</td>
+    <td class="totals"><span id="monthly_tot">$...</span></td>
+    <td class="tot_title">Based on Margins Page:</td>
+    <td class="totals"><span id="adsale_marg">$...</span></td>
+  </tr>
+  <tr>
+    <td class="item">cell</td>
+    <td class="item">cell</td>
+    <td class="tot_title">Monthly Electrical Cost:</td>
+    <td class="totals"><span id="ele_tot">$...</span></td>
+    <td class="tot_title">Based on Months Page:</td>
+    <td class="totals"><span id="adsale_mth">$...</span></td>
+  </tr>
+
+</table>
+<script>
+
+
+document.getElementById("tab2").addEventListener("click",() =>  {
+    window.open("margin.html", "_self");
+});
+document.getElementById("tab1").addEventListener("click",() =>  {
+    window.open("months.html", "_self");
+});
+
+
+/*** Update values upon page load or value change ***/
+
+screencost.value = localStorage.getItem('screen_cost') || 0;
+document.getElementById("screencost").addEventListener("input",() =>  {
+if(screencost.value == ""){ screencost.value = 0;}
+localStorage.setItem('screen_cost', screencost.value);
+calculate();});
+
+mplayercost.value = localStorage.getItem('mplayer_cost') || 0;
+document.getElementById("mplayercost").addEventListener("input",() =>  {
+localStorage.setItem('mplayer_cost', mplayercost.value);
+if(mplayercost.value == ""){ mplayercost.value = 0;}
+calculate();});
+
+mcocost.value = localStorage.getItem('mco_cost') || 0;
+document.getElementById("mcocost").addEventListener("input",() =>  {
+localStorage.setItem('mco_cost', mcocost.value);
+if(mcocost.value == ""){ mcocost.value = 0;}
+calculate();});
+
+inlacost.value = localStorage.getItem('inla_cost') || 0;
+document.getElementById("inlacost").addEventListener("input",() =>  {
+localStorage.setItem('inla_cost', inlacost.value);
+if(inlacost.value == ""){ inlacost.value = 0;}
+calculate();});
+
+elacost.value = localStorage.getItem('ela_cost') || 0;
+document.getElementById("elacost").addEventListener("input",() =>  {
+localStorage.setItem('ela_cost', elacost.value);
+if(elacost.value == ""){ elacost.value = 0;}
+calculate();});
+
+othcost.value = localStorage.getItem('oth_cost') || 0;
+document.getElementById("othcost").addEventListener("input",() =>  {
+localStorage.setItem('oth_cost', othcost.value);
+if(othcost.value == ""){ othcost.value = 0;}
+calculate();});
+
+softcost.value = localStorage.getItem('soft_cost') || 0;
+document.getElementById("softcost").addEventListener("input",() =>  {
+localStorage.setItem('soft_cost', softcost.value);
+if(softcost.value == ""){ softcost.value = 0;}
+calculate();});
+
+supcost.value = localStorage.getItem('sup_cost') || 0;
+document.getElementById("supcost").addEventListener("input",() =>  {
+localStorage.setItem('sup_cost', supcost.value);
+if(supcost.value == ""){ supcost.value = 0;}
+calculate();});
+
+warcost.value = localStorage.getItem('war_cost') || 0;
+document.getElementById("warcost").addEventListener("input",() =>  {
+localStorage.setItem('war_cost', warcost.value);
+if(warcost.value == ""){ warcost.value = 0;}
+calculate();});
+
+crecost.value = localStorage.getItem('cre_cost') || 0;
+document.getElementById("crecost").addEventListener("input",() =>  {
+localStorage.setItem('cre_cost', crecost.value);
+if(crecost.value == ""){ crecost.value = 0;}
+calculate();});
+
+scpower.value = localStorage.getItem('spw_cost') || 0;
+document.getElementById("scpower").addEventListener("input",() =>  {
+localStorage.setItem('spw_cost', scpower.value);
+if(scpower.value == ""){ scpower.value = 0;}
+calculate();});
+
+mppower.value = localStorage.getItem('mpw_cost') || 0;
+document.getElementById("mppower").addEventListener("input",() =>  {
+localStorage.setItem('mpw_cost', mppower.value);
+if(mppower.value == ""){ mppower.value = 0;}
+calculate();});
+
+
+
+
+/*** Update and save values in local storage as they are changes as well as if sliders are moved ***/
+
+document.getElementById("screens").addEventListener("click",() =>  {
+  localStorage.setItem('screen_num', screens.value);
+  calculate();});
+  
+document.getElementById("days").addEventListener("click",() =>  {
+  localStorage.setItem('day_num', days.value);
+  calculate();});
+
+document.getElementById("hours").addEventListener("click",() =>  {
+  localStorage.setItem('hour_num', hours.value);
+  calculate();});
+
+document.getElementById("hydro").addEventListener("click",() =>  {
+  localStorage.setItem('hydro_cost', hydro.value);
+  calculate();});
+
+document.getElementById("lifespan").addEventListener("click",() =>  {
+  localStorage.setItem('life_num', lifespan.value);
+  calculate();});
+
+document.getElementById('adsale_mth').innerHTML = parseFloat(localStorage.getItem('adSales_mth')) || '$'+ 0;
+
+/** Load a few variables needed from other webpage tabs **/
+let margin = localStorage.getItem('margin_num') || 50;
+let months = localStorage.getItem('months_num') || 36;
+
+
+
+/** Re-calculate if user changes software type **/
+[license, saas].map(element => element.addEventListener('input', () => {calculate();}))   
+
+/*** Select software type and change the form and totals accordingly ***/
+let saasRadio = document.getElementById('saas');
+let licenseRadio = document.getElementById('license');
+if(saasRadio.checked)  {
+    let newElement1 = document.getElementById("soft_type");
+    newElement1.textContent = 'SaaS Cost (monthly):';
+    document.getElementById("soft_type").replaceWith(newElement1);
+    let newElement2 = document.getElementById("other_text");
+    newElement2.textContent = 'Other Costs:';
+    document.getElementById("soft_type").replaceWith(newElement1);
+    console.log("SaaS  checked");
+    } 
+if(licenseRadio.checked) {   
+    let newElement1 = document.getElementById("soft_type");
+    newElement1.textContent = 'License Cost (upfront):';
+    document.getElementById("soft_type").replaceWith(newElement1);
+    let newElement2 = document.getElementById("other_text");
+    newElement2.textContent = 'Other Costs (incl. Software License):';
+    document.getElementById("soft_type").replaceWith(newElement1);
+    console.log("SaaS not checked");
+    } 
+  
+function calculate() {
+
+/*** Update and display slider values ***/
+var screenSlider = document.getElementById("screens");
+var screenOutput = document.getElementById("#screens");
+screenOutput.innerHTML = localStorage.getItem('screen_num') || 3;
+document.getElementById('screens').value = localStorage.getItem('screen_num') || 3;
+screenSlider.oninput = function() { screenOutput.innerHTML = this.value;}
+
+var daySlider = document.getElementById("days");
+var dayOutput = document.getElementById("#days");
+dayOutput.innerHTML = localStorage.getItem('day_num') || 5;
+document.getElementById('days').value = localStorage.getItem('day_num') || 5;
+daySlider.oninput = function() { dayOutput.innerHTML = this.value;}
+
+var hourSlider = document.getElementById("hours");
+var hourOutput = document.getElementById("#hours");
+hourOutput.innerHTML = localStorage.getItem('hour_num') || 12;
+document.getElementById('hours').value = localStorage.getItem('hour_num') || 12;
+hourSlider.oninput = function() { hourOutput.innerHTML = this.value;}
+
+var hydroSlider = document.getElementById("hydro");
+var hydroOutput = document.getElementById("#hydro");
+hydroOutput.innerHTML = localStorage.getItem('hydro_cost') || 0.21;
+document.getElementById('hydro').value = localStorage.getItem('hydro_cost') || 0.21;
+hydroSlider.oninput = function() { hydroOutput.innerHTML = parseFloat(this.value).toFixed(2); }
+
+var lifeSlider = document.getElementById("lifespan");
+var lifeOutput = document.getElementById("#lifespan");
+lifeOutput.innerHTML = localStorage.getItem('life_num') || 7;
+document.getElementById('lifespan').value = localStorage.getItem('life_num') || 7;
+lifeSlider.oninput = function() { lifeOutput.innerHTML = parseFloat(this.value).toFixed(0); }
+
+/*** Select software type and change the form and totals accordingly ***/
+typeSoft.oninput = function() { 
+let saasRadio = document.getElementById('saas');
+let licenseRadio = document.getElementById('license');
+if(saasRadio.checked)  {
+    let newElement1 = document.getElementById("soft_type");
+    newElement1.textContent = 'SaaS Cost (monthly):';
+    document.getElementById("soft_type").replaceWith(newElement1);
+    let newElement2 = document.getElementById("other_text");
+    newElement2.textContent = 'Other Costs:';
+    document.getElementById("soft_type").replaceWith(newElement1);
+    } 
+if(licenseRadio.checked) {   
+    let newElement1 = document.getElementById("soft_type");
+    newElement1.textContent = 'License Cost (upfront):';
+    document.getElementById("soft_type").replaceWith(newElement1);
+    let newElement2 = document.getElementById("other_text");
+    newElement2.textContent = 'Other Costs (incl. Software License):';
+    document.getElementById("soft_type").replaceWith(newElement1);
+    } 
+}
+
+/*** Calculate Up-Front total ***/
+
+let capexTotal = ((parseFloat(screencost.value)*parseFloat(screenSlider.value)) + 
+  (parseFloat(mplayercost.value)*parseFloat(screenSlider.value)) +
+  (parseFloat(mcocost.value)*parseFloat(screenSlider.value)) + parseFloat(inlacost.value) + 
+  parseFloat(elacost.value) + parseFloat(othcost.value));
+  if(licenseRadio.checked) {capexTotal = capexTotal + parseFloat(softcost.value);}
+  localStorage.setItem('capex_tot', capexTotal);
+  document.getElementById("capex_tot").innerHTML = '$' + capexTotal.toFixed(2);
+/*** Calculate Monthly Operating total ***/
+let monthlyTotal = (parseFloat(softcost.value)+parseFloat(supcost.value) + parseFloat(warcost.value) + parseFloat(crecost.value));
+  if(saasRadio.checked) {monthlyTotal = monthlyTotal + parseFloat(softcost.value);}
+  localStorage.setItem('monthly_tot', monthlyTotal);
+  document.getElementById("monthly_tot").innerHTML = '$' + monthlyTotal.toFixed(2);
+/*** Calculate Electrical total ***/
+let elecTotal = (parseFloat(screenSlider.value)*((parseFloat(daySlider.value)*52)/12)*parseFloat(hourSlider.value)*(parseFloat(scpower.value)/1000)*(parseFloat(hydro.value))) +
+  (parseFloat(screenSlider.value)*((parseFloat(daySlider.value)*52)/12)*parseFloat(hourSlider.value)*(parseFloat(mppower.value)/1000)*(parseFloat(hydro.value)));
+  localStorage.setItem('ele_tot', elecTotal);
+  document.getElementById("ele_tot").innerHTML = '$' + elecTotal.toFixed(2);
+/*** Calculate Additional Sales Required using Months Scenario ***/
+let adSalesMth = parseFloat((capexTotal + (months * monthlyTotal) + (months * elecTotal))/(margin/100)).toFixed(2);
+console.log(months);
+/*if(adSalesMth == Infinity || isNaN(adSalesMth)){adSalesMth = 0;}*/
+
+  localStorage.setItem('adSales_mth', adSalesMth);
+  
+
+  document.getElementById("adsale_mth").innerHTML = '$' + adSalesMth; 
+}
+
+
+  
+</script>
+</body>
+</html>
+
+
+

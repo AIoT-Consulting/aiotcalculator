@@ -1,0 +1,466 @@
+body{
+  padding: 6px 12px;
+  -webkit-animation: fadeEffect 1s;
+  animation: fadeEffect 1s;
+  background:  rgb(0, 4, 79);
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  width: 80%;
+  max-width: 1000px;
+  margin: auto auto;
+  min-width: 800px;
+  
+}
+.tab    {
+    padding-top: 30px;
+    width: 100%;
+}
+/* Style the buttons inside the tab */
+.tab_on {
+  background-color: rgb(171, 167, 252);
+  border: none;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.6s;
+  font-size: 17px;
+}
+.tab_off {
+  background-color: rgb(95, 86, 253);
+  border: none;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.6s;
+  font-size: 17px;
+}
+/* Fade in tabs */
+@-webkit-keyframes fadeEffect {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+@keyframes fadeEffect {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+/**** Styling for Cells Containing Range Sliders ****/
+.sliders  {
+  background-color: rgb(171, 167, 252);
+  color: white;
+  font-weight: bolder;
+  font-size: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  padding-left: 4px;
+  height: 20px;
+  width: 70px;
+}
+
+/**** Radio Button Styling for  Software Type SelectionPricing page ****/
+.softype  {
+  background-color: rgb(171, 167, 252);
+  color: white;
+  font-weight: bolder;
+  font-size: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  padding-left: 4px;
+  height: 20px;
+  width: 100px;
+}
+.radiofielset {
+ border: none;
+ margin-top: auto;
+ margin-bottom: auto;
+ padding: 0px;
+ text-align: left;
+ background-color: rgb(171, 167, 252);
+}
+.radiofielset legend  {
+  padding-right: 6px;
+  padding-left: 4px;
+  text-align: left;
+  float: left;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+#months   {
+    width: 150px;
+    height: 80px;
+    font-size: 36px;
+    text-align: center;
+    border: 3px solid gray;
+    border-radius: 5px;
+}
+#revenue   {
+    width: 150px;
+    height: 80px;
+    font-size: 20px;
+    text-align: center;
+    border: 3px solid gray;
+    border-radius: 5px;
+}
+#margin   {
+    width: 150px;
+    height: 80px;
+    font-size: 20px;
+    text-align: center;
+    border: 3px solid gray;
+    border-radius: 5px;
+}
+#annualsales  {
+    width: 130px;
+    height: 80px;
+    font-size: 20px;
+    text-align: center;
+    border: 3px solid gray;
+    border-radius: 5px;
+}
+#weekly   {
+    font-size: 20px;
+    font-weight: bolder;
+    color: white;
+}
+#monthly   {    
+    font-size: 20px;
+    font-weight: bolder;
+    color: white;
+}
+#avgchk {
+    width: 150px;
+    height: 80px;
+    font-size: 20px;
+    text-align: center;
+    border: 3px solid gray;
+    border-radius: 5px;
+}
+h1   {
+    font-family: Arial, Helvetica, sans-serif;
+    color:rgb(120, 120, 120);
+    font-size: 50px;
+    margin:0 auto;
+    text-align: center;
+    padding-bottom: 5px;
+}
+h2  {
+    font-size: 18px;
+    color: lightgray;
+    text-align: center;
+}
+.sub-header {
+    color:rgb(120, 120, 120);
+    margin:0 auto;
+    text-align: center;
+    margin-bottom: 40px;
+    padding-top: 20px;
+}
+
+@media only screen and (max-width: 800px) {
+  /* CSS rules specifically for screens up to 480px wide (e.g., phones) */
+  h1 {
+    font-size: 30px;
+  }
+}
+
+td  {  
+  border: 0px solid darkgray;
+  padding-bottom: 2px;
+  padding-top: 2px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+.tg {
+  border: 1px solid darkgray;
+  width: 100%;
+  min-width: 800px;
+  background-image: url('ROI-of-ERP-System1.jpg');
+  background-size: cover;
+  
+  
+}
+.inst_header  {
+  text-align: center;
+  height: 20px;
+  width: 70%;
+}
+.inst_content  {
+  text-align: left;
+  font-size: 12px;
+  padding: 15px;
+  width: 80%;
+}
+.month_header {
+  text-align: center;
+  font-size: 16px;
+  vertical-align: bottom;
+  color: grey;
+  border-bottom: 1px solid grey;
+}
+.weekly {
+  font-size: 10px;
+  width: 125px;
+  padding-left: 4px; 
+  text-align: center;
+  border-left: 1px solid grey;
+}
+.weekly legend  {
+  margin: auto auto;
+  color: grey;
+  text-align: center;
+  font-size: 12px;
+  margin-top: 4px;
+  padding-bottom: 8px;
+}
+.monthly legend  {
+  margin: auto auto;
+  color: grey;
+  text-align: center;
+  font-size: 12px;
+  margin-top: 4px;
+  padding-bottom: 8px;
+}
+.monthly {
+  font-size: 10px;
+  width: 125px;
+  padding-left: 4px; 
+  text-align: center;
+  border-right: 1px solid grey;
+}
+.logo {
+  width: 10%;
+  text-align: center;
+  margin: auto auto;
+  border-bottom: 1px solid grey;
+}
+img {
+    width: 10%;
+}
+
+.subtle_1 {
+  width: 200px;
+  background-color: lightgray;
+  color: black;
+  font-weight: bolder;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+}
+.subtle_2 {
+  width: 200px;
+  background-color: rgb(179, 179, 179);
+  color:black;
+  font-weight: bolder;
+  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  height: 20px;
+}
+.left_border  {
+  border-left: 1px solid grey;
+}
+.right_border  {
+  border-left: 1px solid grey;
+}
+
+.subtle_4 {
+    color: lightgrey;
+    text-align: center;
+    font-size: 14px;
+    font-weight: bolder;
+    margin-top: 20px;
+    padding-bottom: 4px;
+    padding-top: 4px;
+}
+.subtle_5 {
+  position: relative;  
+  color: lightgrey;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bolder;
+  margin-top: 20px;
+  padding-bottom: 4px;
+  top: 30px;
+}
+.subtle_required {
+  width: 200px;
+  background-color: black;
+  color: white;
+  font-weight: bolder;
+  font-size: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+}
+
+.noborder {
+  border: none;
+}
+.tot_title {
+  color: white;
+  font-weight: bolder;
+  font-size: 14px;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: right;
+  padding-right: 15px;
+  height: 20px;
+}
+.totals {
+  color: white;
+  font-weight: bolder;
+  font-size: 12px;
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  padding-left: 4px;
+  height: 20px;
+}
+#anntrans {
+  font-weight: bolder;
+}
+.transac {
+  height: 15px;
+  font-size: 12px;
+  text-align: center;
+  color: lightgray; 
+  margin-top: -28px;
+  background-color: white;
+  color: black;
+  margin-bottom: 6px;
+  border: 2px solid gray;
+  border-radius: 5px;
+}
+#totalTrans {
+  font-size: 12px;
+  font-weight: bolder;
+}
+.profit {
+  color: white;
+  background-color: black;
+  font-size: 14px;
+  text-align: center;
+}
+#period {
+  font-size: 16px;
+  font-weight: bolder;
+}
+.profitnum  {
+ 
+  font-size: 18px;
+  text-align: center;
+  font-weight: bolder;
+}
+#checkD, #checkP {
+  font-size: 18px;
+  font-weight: bolder;
+}
+.opertitles {
+    background-color:  rgb(95, 86, 253);
+    color: white(255, 255, 255);
+    border: 2px solid gray;
+    border-radius: 5px;
+    text-align: right;
+    font-size: 12px;
+    font-weight: bolder;
+    height: 20px;
+    width: 160px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-right: 10px;    
+}
+.operspan {
+ font-weight: bolder; 
+ font-size: 16px; 
+ text-align: left;
+ padding-left: 25px;
+ 
+ background-color: rgb(147, 145, 194);
+ 
+}
+.item {
+  font-size: 10px;
+  padding-right: 6px; 
+  text-align: right;
+}
+
+.item_in_right {
+  display: inline-block;
+  font-size: 10px;
+  width: auto;
+  padding-right: 5px; 
+  text-align: right;
+  float: right;
+}
+.item_in_left {
+  display: inline-block;
+  font-size: 12px;
+  width: auto;
+  padding-left: 4px; 
+  text-align: left;
+  float: left;
+}
+.item_slider {
+  font-size: 14px;
+  font-weight: bolder;
+  width: 25%;
+  padding-left: 5px;
+  width: 30px;
+  text-align: center; 
+}
+.item input{
+  background-color: rgb(171, 167, 252);
+}
+.item_cost {
+  width: 25px;
+  height: 25px;
+  text-align: right;
+  border-radius: 5px;
+  background-color: white;
+  vertical-align: middle;
+  color: black;
+  padding: 0;
+  font-size: 12px;
+}
+.item_cost input{
+  font-size: 12px;
+  border: none;
+  outline: none;
+  width: 65px;
+  height: 25px;
+  padding-bottom: 3px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.item legend  {
+  width: 65%;
+  margin: auto auto;
+  color: grey;
+  text-align: center;
+  font-size: 12px;
+  margin-top: 4px;
+  padding-bottom: 4px;
+}
+input[type=radio] {
+  opacity: 1;
+  width: 20px;
+}
+/* ensures the increment/decrement arrows always display on months selector*/
+#months::-webkit-inner-spin-button, 
+#months::-webkit-outer-spin-button {
+  opacity: 1;
+  width: 5px;
+}
+/* ensures the increment/decrement arrows does not display on value inputs selector*/
+.item_cost::-webkit-inner-spin-button, 
+.item_cost::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  opacity: 1;
+  width: 5px;
+}
+
+
+
