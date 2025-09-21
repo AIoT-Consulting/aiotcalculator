@@ -179,7 +179,7 @@ td  {
   border: 1px solid darkgray;
   width: 100%;
   min-width: 800px;
-  background-image: url('ROI-of-ERP-System1.jpg');
+  background-image: url('../images/ROI-of-ERP-System1.jpg');
   background-size: cover;
   
   
@@ -461,6 +461,7 @@ input[type=radio] {
   opacity: 1;
   width: 5px;
 }
+
 
 
 
