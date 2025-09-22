@@ -51,18 +51,15 @@ warranty_cost.oninput = function() {
 
 /** Load all shared variables prior to doing anything else **/
 function loadVar()  {
-  
-  let mplayercost = localStorage.getItem('player_cost');
-  
-  player_cost.value = localStorage.getItem('player_cost');
-  warranty_cost.value = localStorage.getItem('war_cost');
+  player_cost.value = localStorage.getItem('player_cost') || 0;
+  warranty_cost.value = localStorage.getItem('war_cost') || 0;
 }
-
 /** Calculate total and display **/
 function calculate()  {
-let lifeOutput = localStorage.getItem('life_num');
+let lifeOutput = localStorage.getItem('life_num') ||7;
 let total = (parseFloat(player_cost.value) +  parseFloat(warranty_cost.value)) * lifeOutput;
   document.getElementById("total").innerHTML = '$' + total;
+console.log("Month Tab Calculate Fired");
 }
 </script>
 </body>
