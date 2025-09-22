@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="styles/style.css" />
   <link rel="icon" type="image/x-icon" href="https://aiot-consulting.github.io/Static-Assets/favicon.ico">
 </head>
-<body onload="loadVar();">
+<body onload="loadVar();calculate();">
   <h1>DMB ROI CALCULATOR </h1>
   <h2>Capital Expendatures and Operating Conditions</h2>
 <div class="tab">
@@ -41,7 +41,11 @@ life_Slider.oninput = function() {
 
 /** Load all shared variables prior to doing anything else **/
 function loadVar()  {
-  lifeOutput.innerHTML = life_Slider.value = localStorage.getItem('life_num');
+  lifeOutput.innerHTML = life_Slider.value = localStorage.getItem('life_num') || 7;
+}
+/** Calculate total and display **/
+function calculate()  {
+console.log("Pricing Tab Calculate Fired");
 }
 </script>
 </body>
