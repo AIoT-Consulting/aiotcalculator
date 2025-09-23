@@ -7,27 +7,46 @@
   <link rel="stylesheet" href="styles/style.css" />
   <link rel="icon" type="image/x-icon" href="https://aiot-consulting.github.io/Static-Assets/favicon.ico">
 </head>
-<body onload="calculate();">
+<body onload="loadVar(); calculate();">
   <h1>DMB ROI CALCULATOR </h1>
   <h2>Months vs Average Check Lift Scenario</h2>
 <div class="tab">
   <button class="tab_off" id="tab1">Pricing Data</button>
   <button class="tab_on" id="tab2">Calculator (Month)</button>
 </div>
-<table>
-    <div>This is the table for Months</div>
+<h2>Store Operating Conditions</h2>
+<table class="tg">
 
+<tr>
+  <td class="item" rowspan="2">
+      <legend for="months">MONTHS VS AVERAGE CHECK</legend>
+      <input type="number" class="textbox" id="months" name="months" min="0" max="120" value="36"></div> </td>
+</tr>
+</table>
+<table class="tg">
   <tr>
     <td>Total:</td>
     <td><span id="total">...</span> </td>
   </tr>
 </table>
 <script>
-
+/** Load all shared variables prior to doing anything else **/
+function loadVar()  {
+  months_num.value = localStorage.getItem('months_num') || 36;
+}
 
 /** Listen for changing tab click **/
 document.getElementById("tab1").addEventListener("click",() =>  {
     window.open("index.html", "_self");});
+
+/** Listen for changes in the input fields and update accordingly **/
+let months_num = document.getElementById("months");
+months.innerHTML = months_num.value;
+months.onfocus = function() {months_num.select();}
+months.oninput = function() {
+  months.innerHTML = this.value;
+  localStorage.setItem('months_num', months_num.value);
+  calculate();}
 
 
 /** Calculate total and display **/
@@ -40,6 +59,7 @@ let saasCost = localStorage.getItem('saas_cost') || 0;
 let suppCost = localStorage.getItem('supp_cost') || 0;
 let creaCost = localStorage.getItem('crea_cost') || 0;
 let lifeOutput = localStorage.getItem('life_num') ||7;
+
 
 let total = (parseFloat(displayCost) + parseFloat(playerCost) + parseFloat(mcoCost)) * lifeSpan;
   document.getElementById("total").innerHTML = '$' + total;
