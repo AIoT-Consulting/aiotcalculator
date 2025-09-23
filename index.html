@@ -7,13 +7,14 @@
   <link rel="stylesheet" href="styles/style.css" />
   <link rel="icon" type="image/x-icon" href="https://aiot-consulting.github.io/Static-Assets/favicon.ico">
 </head>
-<body onload="loadVar();calculate();">
+<body onload="loadVar(); calculate();">
   <h1>DMB ROI CALCULATOR </h1>
   <h2>Capital Expendatures and Operating Conditions</h2>
 <div class="tab">
   <button class="tab_on" id="tab1">Pricing Data</button>
   <button class="tab_off" id="tab2">Calculator (Month)</button>
 </div>
+
 <h2>Hardware</h2>
 <table class="tg">
 <tr>
@@ -22,6 +23,14 @@
       <input type="range" name="lifeSlider" id="lifeSlider" min="3" max="10" step="1" value="7">
     </td>
     <td><div><span id="lifeOutput"></span> years</div></td>
+</tr>
+
+<tr>
+    <td>
+      <legend for="screenSlider">Number of Displays</legend>
+      <input type="range" name="screenSlider" id="screenSlider" min="3" max="20" step="1" value="3">
+    </td>
+    <td><div><span id="screenOutput"></span> units</div></td>
 </tr>
 
 <tr>
@@ -55,7 +64,9 @@
 <script>
 /** Load all shared variables prior to doing anything else **/
 function loadVar()  {
+  
   lifeOutput.innerHTML = life_Slider.value = localStorage.getItem('life_num') || 7;
+  screenOutput.innerHTML = screen_Slider.value = localStorage.getItem('screen_num') || 3;
   display_cost.value = localStorage.getItem('display_cost') || 0;
   player_cost.value = localStorage.getItem('player_cost') || 0;
   mco_cost.value = localStorage.getItem('mco_cost') || 0;
@@ -68,12 +79,22 @@ document.getElementById("tab2").addEventListener("click",() =>  {
     window.open("month.html", "_self");});
 
 /** Listen for changes in the input fields and update accordingly **/
+
+
 let life_Slider = document.getElementById("lifeSlider");
 let life_Output = document.getElementById("lifeOutput");
 lifeOutput.innerHTML = life_Slider.value;
 life_Slider.oninput = function() {
   lifeOutput.innerHTML = this.value;
   localStorage.setItem('life_num', life_Slider.value);
+  calculate();}
+
+let screen_Slider = document.getElementById("screenSlider");
+let screen_Output = document.getElementById("screenOutput");
+screenOutput.innerHTML = screen_Slider.value;
+screen_Slider.oninput = function() {
+  screenOutput.innerHTML = this.value;
+  localStorage.setItem('screen_num', screen_Slider.value);
   calculate();}
 
 let display_cost = document.getElementById("screencost");
