@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="styles/style.css" />
   <link rel="icon" type="image/x-icon" href="https://aiot-consulting.github.io/Static-Assets/favicon.ico">
 </head>
-<body onload="loadVar(); calculate();">
+<body onload="calculate();">
   <h1>DMB ROI CALCULATOR </h1>
   <h2>Months vs Average Check Lift Scenario</h2>
 <div class="tab">
@@ -16,14 +16,7 @@
 </div>
 <table>
     <div>This is the table for Months</div>
-  <tr>
-    <td>Media Player Cost (per unit):</td>
-    <td>$<input type="number" name="mplayercost" id="mplayercost" value="0"></td>
-  </tr>
-  <tr>
-    <td>Monthly Warranty Fee (if applcable):</td>
-    <td>$<input type="number" name="warcost" id="warcost" value="0"></td>
-  </tr>
+
   <tr>
     <td>Total:</td>
     <td><span id="total">...</span> </td>
@@ -31,35 +24,24 @@
 </table>
 <script>
 
+
+/** Listen for changing tab click **/
 document.getElementById("tab1").addEventListener("click",() =>  {
     window.open("index.html", "_self");});
 
 
-let player_cost = document.getElementById("mplayercost");
-mplayercost.innerHTML = player_cost.value;
-player_cost.oninput = function() {
-  mplayercost.innerHTML = this.value;
-  localStorage.setItem('player_cost', player_cost.value);
-  calculate();
-  }
-
-let warranty_cost = document.getElementById("warcost");
-warcost.innerHTML = warranty_cost.value;
-warranty_cost.oninput = function() {
-  warcost.innerHTML = this.value;
-  localStorage.setItem('war_cost', warranty_cost.value);
-  calculate();
-  }
-
-/** Load all shared variables prior to doing anything else **/
-function loadVar()  {
-  player_cost.value = localStorage.getItem('player_cost') || 0;
-  warranty_cost.value = localStorage.getItem('war_cost') || 0;
-}
 /** Calculate total and display **/
 function calculate()  {
+let lifeSpan = localStorage.getItem('life_num') || 7;
+let displayCost = localStorage.getItem('display_cost') || 0;
+let playerCost = localStorage.getItem('player_cost') || 0;
+let mcoCost = localStorage.getItem('mco_cost') || 0;
+let saasCost = localStorage.getItem('saas_cost') || 0;
+let suppCost = localStorage.getItem('supp_cost') || 0;
+let creaCost = localStorage.getItem('crea_cost') || 0;
 let lifeOutput = localStorage.getItem('life_num') ||7;
-let total = (parseFloat(player_cost.value) +  parseFloat(warranty_cost.value)) * lifeOutput;
+
+let total = (parseFloat(displayCost) + parseFloat(playerCost) + parseFloat(mcoCost)) * lifeSpan;
   document.getElementById("total").innerHTML = '$' + total;
 console.log("Month Tab Calculate Fired");
 }
