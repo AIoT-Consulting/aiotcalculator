@@ -24,41 +24,108 @@
     </td>
     <td><div><span id="lifeOutput"></span> years</div></td>
 </tr>
-
 <tr>
     <td>
-      <legend for="screenSlider">Number of Displays</legend>
-      <input type="range" name="screenSlider" id="screenSlider" min="3" max="20" step="1" value="3">
+      <legend for="screenSlider">Number of displays:</legend>
+      <input type="range" name="screenSlider" id="screenSlider" min="1" max="20" step="1" value="3">
     </td>
     <td><div><span id="screenOutput"></span> units</div></td>
 </tr>
-
 <tr>
     <td>Display Cost (per/unit):</td>
-    <td>$<input type="number" name="screencost" id="screencost" placeholder="0" value="0" pattern="\d*"></td>
+    <td>$ <input type="number" name="screencost" id="screencost" placeholder="0" value="0" pattern="\d*"></td>
 </tr>
 <tr>
     <td>Media Player Cost (per/unit):</td>
-    <td>$<input type="number" name="playercost" id="playercost" placeholder="0" value="0" pattern="\d*"></td>
+    <td>$ <input type="number" name="playercost" id="playercost" placeholder="0" value="0" pattern="\d*"></td>
 </tr>
 <tr>
     <td>Mounts/Cables/Other Cost (per/unit):</td>
-    <td>$<input type="number" name="mcocost" id="mcocost" placeholder="0" value="0" pattern="\d*"></td>
+    <td>$ <input type="number" name="mcocost" id="mcocost" placeholder="0" value="0" pattern="\d*"></td>
+</tr>
+<tr>
+    <td>_______________________________</td>
+</tr>
+<tr>
+    <td>Total Hardware Costs:</td>
+    <td> $ <span id="hardware">...</span></td>
 </tr>
 </table>
 <h2>Monthly Operating Costs</h2>
 <table class="tg">
 <tr>
+    <td>
+      <legend for="daySlider">Days per week open:</legend>
+      <input type="range" name="daySlider" id="daySlider" min="1" max="7" step="1" value="5">
+    </td>
+    <td><div><span id="dayOutput"></span> days</div></td>
+</tr>
+<tr>
+    <td>
+      <legend for="hourSlider">Hours per wek open:</legend>
+      <input type="range" name="hourSlider" id="hourSlider" min="1" max="24" step="1" value="8">
+    </td>
+    <td><div><span id="hourOutput"></span> hours</div></td>
+</tr>
+  <tr>
     <td>Monthly Sofware Cost (SaaS):</td>
-    <td>$<input type="number" name="saascost" id="saascost" placeholder="0" value="" pattern="\d*"></td>
+    <td>$ <input type="number" name="saascost" id="saascost" placeholder="0" value="" pattern="\d*"></td>
 </tr>
 <tr>
     <td>Monthly Support Cost (if applicable):</td>
-    <td>$<input type="number" name="suppcost" id="suppcost" placeholder="0" value="0" pattern="\d*"></td>
+    <td>$ <input type="number" name="suppcost" id="suppcost" placeholder="0" value="0" pattern="\d*"></td>
 </tr>
 <tr>
     <td>Monthly Creative Cost (if applcable):</td>
-    <td>$<input type="number" name="creacost" id="creacost" placeholder="0" value="0" pattern="\d*"></td>
+    <td>$ <input type="number" name="creacost" id="creacost" placeholder="0" value="0" pattern="\d*"></td>
+</tr>
+<tr>
+    <td>
+      <legend for="hydroSlider">Electricity Costs:</legend>
+      <input type="range" name="hydroSlider" id="hydroSlider" min="0.00" max="0.80" step="0.01" value="0.29">
+    </td>
+    <td><div><span id="hydroOutput"></span> (KwHr)</div></td>
+<tr>
+    <td>Display Consumption (watts):</td>
+    <td>&nbsp;&nbsp;&nbsp;<input type="number" name="scpower" id="scpower" placeholder="0" value="" pattern="\d*"> w</td>
+</tr>
+<tr>
+    <td>Media Player Consumption (watts):</td>
+    <td>&nbsp;&nbsp;&nbsp;<input type="number" name="mppower" id="mppower" placeholder="0" value="" pattern="\d*"> w</td>
+</tr>
+<tr>
+    <td>Total Monthly Consumption Cost:</td>           
+    <td>$ <span id="totpower">...</span></td>
+</tr>
+<tr>
+    <td>_______________________________</td>
+</tr>
+<tr>
+    <td>Total Monthly Operating Costs:</td> 
+    <td>$ <span id="monthly">...</span></td>
+</tr>
+</table>
+<h2>Store Operations Data</h2>
+<table class="tg">
+<tr>
+    <td>Annual Revenue:</td>
+    <td>$ <input type="number" name="revenue" id="revenue" placeholder="0" value="" pattern="\d*"></td>
+</tr>
+<tr>
+    <td>Average Check:</td>
+    <td>$ <input type="number" name="check" id="check" placeholder="0" value="" pattern="\d*"></td>
+</tr>
+<tr>
+    <td>Average Margin:</td>
+    <td>$ <input type="number" name="margin" id="margin" placeholder="0" value="" pattern="\d*"></td>
+</tr>
+</table>
+<h2>Store Operations Data</h2>
+<table class="tg">
+<tr>
+    <td>Additional sales required over period:
+    $ <span id="adsalemth"><input type="number" name="margin" id="margin" placeholder="0" value="" pattern="\d*"></span>
+    </td>
 </tr>
 </table>
 <script>
@@ -67,12 +134,21 @@ function loadVar()  {
   
   lifeOutput.innerHTML = life_Slider.value = localStorage.getItem('life_num') || 7;
   screenOutput.innerHTML = screen_Slider.value = localStorage.getItem('screen_num') || 3;
+  hydroOutput.innerHTML = hydro_Slider.value = localStorage.getItem('hydro_cost') || 0.29;
+  dayOutput.innerHTML = day_Slider.value = localStorage.getItem('day_num') || 5;
+  hourOutput.innerHTML = hour_Slider.value = localStorage.getItem('hour_num') || 8;
   display_cost.value = localStorage.getItem('display_cost') || 0;
   player_cost.value = localStorage.getItem('player_cost') || 0;
   mco_cost.value = localStorage.getItem('mco_cost') || 0;
   saas_cost.value = localStorage.getItem('saas_cost') || 0;
   supp_cost.value = localStorage.getItem('supp_cost') || 0;
   crea_cost.value = localStorage.getItem('crea_cost') || 0;
+  scpower_cost.value = localStorage.getItem('scpower_cost') || 0;
+  mppower_cost.value = localStorage.getItem('mppower_cost') || 0;
+  revenue_num.value = localStorage.getItem('rev_num') || 0;
+  check_num.value = localStorage.getItem('che_num') || 0;
+  margin_num.value = localStorage.getItem('mar_num') || 0;
+  months = localStorage.getItem('months_num') || 0;
 }
 /** Listen for changing tab click **/
 document.getElementById("tab2").addEventListener("click",() =>  {
@@ -95,6 +171,30 @@ screenOutput.innerHTML = screen_Slider.value;
 screen_Slider.oninput = function() {
   screenOutput.innerHTML = this.value;
   localStorage.setItem('screen_num', screen_Slider.value);
+  calculate();}
+
+let day_Slider = document.getElementById("daySlider");
+let day_Output = document.getElementById("dayOutput");
+dayOutput.innerHTML = day_Slider.value;
+day_Slider.oninput = function() {
+  dayOutput.innerHTML = this.value;
+  localStorage.setItem('day_num', day_Slider.value);
+  calculate();}
+
+let hour_Slider = document.getElementById("hourSlider");
+let hour_Output = document.getElementById("hourOutput");
+hourOutput.innerHTML = hour_Slider.value;
+hour_Slider.oninput = function() {
+  hourOutput.innerHTML = this.value;
+  localStorage.setItem('hour_num', hour_Slider.value);
+  calculate();}
+
+let hydro_Slider = document.getElementById("hydroSlider");
+let hydro_Output = document.getElementById("hydroOutput");
+hydroOutput.innerHTML = hydro_Slider.value;
+hydro_Slider.oninput = function() {
+  hydroOutput.innerHTML = parseFloat(this.value).toFixed(2); 
+  localStorage.setItem('hydro_cost', hydro_Slider.value);
   calculate();}
 
 let display_cost = document.getElementById("screencost");
@@ -145,10 +245,55 @@ creacost.oninput = function() {
   localStorage.setItem('crea_cost', crea_cost.value);
   calculate();}
 
+let scpower_cost = document.getElementById("scpower");
+scpower.innerHTML = scpower_cost.value;
+scpower.onfocus = function() {scpower_cost.select();}
+scpower.oninput = function() {
+  scpower.innerHTML = this.value;
+  localStorage.setItem('scpower_cost', scpower_cost.value);
+  calculate();}
+
+let mppower_cost = document.getElementById("mppower");
+mppower.innerHTML = mppower_cost.value;
+mppower.onfocus = function() {mppower_cost.select();}
+mppower.oninput = function() {
+  mppower.innerHTML = this.value;
+  localStorage.setItem('mppower_cost', mppower_cost.value);
+  calculate();}
+
+let revenue_num = document.getElementById("revenue");
+revenue.innerHTML = revenue_num.value;
+revenue.onfocus = function() {revenue_num.select();}
+revenue.oninput = function() {
+  revenue.innerHTML = this.value;
+  localStorage.setItem('rev_num', revenue_num.value);
+  calculate();}
+
+let check_num = document.getElementById("check");
+check.innerHTML = check_num.value;
+check.onfocus = function() {check_num.select();}
+check.oninput = function() {
+  check.innerHTML = this.value;
+  localStorage.setItem('che_num', check_num.value);
+  calculate();}
+
+let margin_num = document.getElementById("margin");
+margin.innerHTML = margin_num.value;
+margin.onfocus = function() {margin_num.select();}
+margin.oninput = function() {
+  margin.innerHTML = this.value;
+  localStorage.setItem('mar_num', margin_num.value);
+  calculate();}
 
 /** Calculate total and display **/
 function calculate()  {
-console.log("Pricing Tab Calculate Fired");
+let hardware_tot = (parseFloat(screencost.value) + parseFloat(playercost.value) +  parseFloat(mcocost.value)) * screenSlider.value;
+let  monthly_power = (((parseFloat(scpower.value/1000) + parseFloat(mppower.value)/1000) * (parseFloat(screenSlider.value))) * (((parseFloat(daySlider.value)* parseFloat(hourSlider.value) * 52) / 12))) * parseFloat(hydroSlider.value)
+let monthly_tot = (parseFloat(saascost.value) + parseFloat(suppcost.value) + parseFloat(creacost.value) + monthly_power) 
+console.log(monthly_power);
+document.getElementById('hardware').innerHTML = hardware_tot.toFixed(2);
+document.getElementById('totpower').innerHTML = monthly_power.toFixed(2);
+document.getElementById('monthly').innerHTML = monthly_tot.toFixed(2);
 }
 </script>
 </body>
