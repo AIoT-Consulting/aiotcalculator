@@ -109,26 +109,27 @@
 <table class="tg">
 <tr>
     <td>Annual Revenue:</td>
-    <td>$ <input type="number" name="revenue" id="revenue" placeholder="0" value="" pattern="\d*"></td>
+    <td>$&nbsp;&nbsp;<input type="number" name="revenue" id="revenue" placeholder="0" value="" pattern="\d*"></td>
 </tr>
 <tr>
     <td>Average Check:</td>
-    <td>$ <input type="number" name="check" id="check" placeholder="0" value="" pattern="\d*"></td>
+    <td>$&nbsp;&nbsp;<input type="number" name="check" id="check" placeholder="0" value="" pattern="\d*"></td>
 </tr>
 <tr>
     <td>Average Margin:</td>
-    <td>$ <input type="number" name="margin" id="margin" placeholder="0" value="" pattern="\d*"></td>
+    <td>% <input type="number" name="margin" id="margin" placeholder="0" value="" pattern="\d*"></td>
 </tr>
 </table>
 <h2>Store Operations Data</h2>
 <table class="tg">
 <tr>
     <td>Additional sales required over period:
-    $ <span id="adsalemth"><input type="number" name="margin" id="margin" placeholder="0" value="" pattern="\d*"></span>
+    $ <span id="adsalemth">...</span>
     </td>
 </tr>
 </table>
 <script>
+
 /** Load all shared variables prior to doing anything else **/
 function loadVar()  {
   
@@ -290,25 +291,18 @@ function calculate()  {
 let hardware_tot = (parseFloat(screencost.value) + parseFloat(playercost.value) +  parseFloat(mcocost.value)) * screenSlider.value;
 let  monthly_power = (((parseFloat(scpower.value/1000) + parseFloat(mppower.value)/1000) * (parseFloat(screenSlider.value))) * (((parseFloat(daySlider.value)* parseFloat(hourSlider.value) * 52) / 12))) * parseFloat(hydroSlider.value)
 let monthly_tot = (parseFloat(saascost.value) + parseFloat(suppcost.value) + parseFloat(creacost.value) + monthly_power) 
+let adSalesMth = ((parseFloat(months) * parseFloat(monthly_tot)) + parseFloat(hardware_tot)) / (parseFloat(margin.value)/100);
+console.log(hardware_tot);
+console.log(months);
+
 console.log(monthly_power);
+console.log(adSalesMth);
 document.getElementById('hardware').innerHTML = hardware_tot.toFixed(2);
 document.getElementById('totpower').innerHTML = monthly_power.toFixed(2);
 document.getElementById('monthly').innerHTML = monthly_tot.toFixed(2);
-}
-const sliderEl = document.querySelector("#range")
-const sliderValue = document.querySelector(".value")
+document.getElementById('adsalemth').innerHTML = adSalesMth.toFixed(2);
 
-sliderEl.addEventListener("input", (event) => {
-  const tempSliderValue = event.target.value; 
-  
-  sliderValue.textContent = tempSliderValue;
-  
-  const progress = (tempSliderValue / sliderEl.max) * 100;
- 
-  sliderEl.style.background = `linear-gradient(to right, #f50 ${progress}%, #ccc ${progress}%)`;
-  
-  sliderEl.style.setProperty("--thumb-rotate", `${(tempSliderValue/100) * 2160}deg`)
-})
+}
 </script>
 </body>
 </html>
