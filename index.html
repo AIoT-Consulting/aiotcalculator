@@ -14,7 +14,6 @@
   <button class="tab_on" id="tab1">Pricing Data</button>
   <button class="tab_off" id="tab2">Calculator (Month)</button>
 </div>
-
 <h2>Hardware</h2>
 <table class="tg">
 <tr>
@@ -33,22 +32,22 @@
 </tr>
 <tr>
     <td>Display Cost (per/unit):</td>
-    <td>$ <input type="number" name="screencost" id="screencost" placeholder="0" value="0" pattern="\d*"></td>
+    <td><input type="text" name="screencost" id="screencost" placeholder="0.00" value="0"></td>
 </tr>
 <tr>
     <td>Media Player Cost (per/unit):</td>
-    <td>$ <input type="number" name="playercost" id="playercost" placeholder="0" value="0" pattern="\d*"></td>
+    <td><input type="text" name="playercost" id="playercost" placeholder="0" value="0"></td>
 </tr>
 <tr>
     <td>Mounts/Cables/Other Cost (per/unit):</td>
-    <td>$ <input type="number" name="mcocost" id="mcocost" placeholder="0" value="0" pattern="\d*"></td>
+    <td><input type="text" name="mcocost" id="mcocost" placeholder="0" value="0" pattern="\d*"></td>
 </tr>
 <tr>
     <td>_______________________________</td>
 </tr>
 <tr>
     <td>Total Hardware Costs:</td>
-    <td> $ <span id="hardware">...</span></td>
+    <td><span id="hardware">...</span></td>
 </tr>
 </table>
 <h2>Monthly Operating Costs</h2>
@@ -124,23 +123,27 @@
 <table class="tg">
 <tr>
     <td>Additional sales required over period:
-    $ <span id="adsalemth">...</span>
+    <span id="adsalemth">...</span>
     </td>
 </tr>
 </table>
 <script>
-
+let scr_cost = 0;
+let pla_cost = 0;
+let other_cost = 0;
 /** Load all shared variables prior to doing anything else **/
 function loadVar()  {
-  
+  localStorage.setItem('mco_cost',"0.00");
   lifeOutput.innerHTML = life_Slider.value = localStorage.getItem('life_num') || 7;
   screenOutput.innerHTML = screen_Slider.value = localStorage.getItem('screen_num') || 3;
   hydroOutput.innerHTML = hydro_Slider.value = localStorage.getItem('hydro_cost') || 0.29;
   dayOutput.innerHTML = day_Slider.value = localStorage.getItem('day_num') || 5;
   hourOutput.innerHTML = hour_Slider.value = localStorage.getItem('hour_num') || 8;
-  display_cost.value = localStorage.getItem('display_cost') || 0;
-  player_cost.value = localStorage.getItem('player_cost') || 0;
-  mco_cost.value = localStorage.getItem('mco_cost') || 0;
+  
+  display_cost.value = formatCurrencyLocal(localStorage.getItem('display_cost') || "0.00");
+  player_cost.value = formatCurrencyLocal(localStorage.getItem('player_cost') || "0.00");
+  mco_cost.value = formatCurrencyLocal(localStorage.getItem('mco_cost') || "0.00");
+  
   saas_cost.value = localStorage.getItem('saas_cost') || 0;
   supp_cost.value = localStorage.getItem('supp_cost') || 0;
   crea_cost.value = localStorage.getItem('crea_cost') || 0;
@@ -148,8 +151,8 @@ function loadVar()  {
   mppower_cost.value = localStorage.getItem('mppower_cost') || 0;
   revenue_num.value = localStorage.getItem('rev_num') || 0;
   check_num.value = localStorage.getItem('che_num') || 0;
-  margin_num.value = localStorage.getItem('mar_num') || 0;
-  months = localStorage.getItem('months_num') || 0;
+  margin_num.value = localStorage.getItem('mar_num') || 50;
+  months = localStorage.getItem('months_num') || 36;
 }
 /** Listen for changing tab click **/
 document.getElementById("tab2").addEventListener("click",() =>  {
@@ -199,31 +202,39 @@ hydro_Slider.oninput = function() {
   calculate();}
 
 let display_cost = document.getElementById("screencost");
-screencost.innerHTML = display_cost.value;
 screencost.onfocus = function() {display_cost.select();}
 screencost.oninput = function() {
+  formatCurrency(this);
   screencost.innerHTML = this.value;
-  localStorage.setItem('display_cost', display_cost.value);
+  let s = this.value;
+  let numberString = s.replace("$", "").replace(",", "");
+  scr_cost = parseFloat(numberString).toFixed(2); 
+  localStorage.setItem('display_cost', scr_cost);
   calculate();}
 
 let player_cost = document.getElementById("playercost");
-playercost.innerHTML = player_cost.value;
 playercost.onfocus = function() {player_cost.select();}
 playercost.oninput = function() {
+  formatCurrency(this);
   playercost.innerHTML = this.value;
-  localStorage.setItem('player_cost', player_cost.value);
+  let s = this.value;
+  let numberString = s.replace("$", "").replace(",", "");
+  pla_cost = parseFloat(numberString).toFixed(2);
+  localStorage.setItem('player_cost', pla_cost);
   calculate();}
 
 let mco_cost = document.getElementById("mcocost");
-mcocost.innerHTML = mco_cost.value;
 mcocost.onfocus = function() {mco_cost.select();}
 mcocost.oninput = function() {
+  formatCurrency(this);
   mcocost.innerHTML = this.value;
-  localStorage.setItem('mco_cost', mco_cost.value);
+  let s = this.value;
+  let numberString = s.replace("$", "").replace(",", "");
+  other_cost = parseFloat(numberString).toFixed(2);
+  localStorage.setItem('mco_cost', other_cost);
   calculate();}
 
 let saas_cost = document.getElementById("saascost");
-saascost.innerHTML = saas_cost.value;
 saascost.onfocus = function() {saas_cost.select();}
 saascost.oninput = function() {
   saascost.innerHTML = this.value;
@@ -231,7 +242,6 @@ saascost.oninput = function() {
   calculate();}
 
 let supp_cost = document.getElementById("suppcost");
-suppcost.innerHTML = supp_cost.value;
 suppcost.onfocus = function() {supp_cost.select();}
 suppcost.oninput = function() {
   suppcost.innerHTML = this.value;
@@ -239,7 +249,6 @@ suppcost.oninput = function() {
   calculate();}
 
 let crea_cost = document.getElementById("creacost");
-creacost.innerHTML = crea_cost.value;
 creacost.onfocus = function() {crea_cost.select();}
 creacost.oninput = function() {
   creacost.innerHTML = this.value;
@@ -247,7 +256,6 @@ creacost.oninput = function() {
   calculate();}
 
 let scpower_cost = document.getElementById("scpower");
-scpower.innerHTML = scpower_cost.value;
 scpower.onfocus = function() {scpower_cost.select();}
 scpower.oninput = function() {
   scpower.innerHTML = this.value;
@@ -255,7 +263,6 @@ scpower.oninput = function() {
   calculate();}
 
 let mppower_cost = document.getElementById("mppower");
-mppower.innerHTML = mppower_cost.value;
 mppower.onfocus = function() {mppower_cost.select();}
 mppower.oninput = function() {
   mppower.innerHTML = this.value;
@@ -263,15 +270,14 @@ mppower.oninput = function() {
   calculate();}
 
 let revenue_num = document.getElementById("revenue");
-revenue.innerHTML = revenue_num.value;
 revenue.onfocus = function() {revenue_num.select();}
 revenue.oninput = function() {
   revenue.innerHTML = this.value;
   localStorage.setItem('rev_num', revenue_num.value);
+  console.log(revenue_num.value);
   calculate();}
 
 let check_num = document.getElementById("check");
-check.innerHTML = check_num.value;
 check.onfocus = function() {check_num.select();}
 check.oninput = function() {
   check.innerHTML = this.value;
@@ -279,29 +285,58 @@ check.oninput = function() {
   calculate();}
 
 let margin_num = document.getElementById("margin");
-margin.innerHTML = margin_num.value;
 margin.onfocus = function() {margin_num.select();}
 margin.oninput = function() {
   margin.innerHTML = this.value;
   localStorage.setItem('mar_num', margin_num.value);
   calculate();}
 
+// The formatCurrency function 
+function formatCurrency(input) {
+    // Remove non-numeric characters from the input value
+    let value = input.value.replace(/[^\d]+/g, '');
+    // Split the value into whole and decimal parts
+    const wholePart = value.slice(0, -2);
+    const decimalPart = value.slice(-2);
+    // Format the whole part with commas every three digits
+    let formattedValue = wholePart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    // Add the decimal point and the last two digits
+    formattedValue += `.${decimalPart}`; 
+    // Update the input value with the formatted value and add $ symbol
+    input.value = "$"+formattedValue;
+}
+// The formatCurrency function for value loaded from localStorage
+function formatCurrencyLocal(num) {
+    // Remove non-numeric characters from the input value
+    let value = num.replace(/[^\d]+/g, '');
+    // Split the value into whole and decimal parts
+    const wholePart = value.slice(0, -2);
+    const decimalPart = value.slice(-2);
+    // Format the whole part with commas every three digits
+    let formattedValue = wholePart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    // Add the decimal point and the last two digits
+    formattedValue += `.${decimalPart}`; 
+    // Update the input value with the formatted value and add $ symbol
+    num = "$"+formattedValue;
+    return num;
+}
+
 /** Calculate total and display **/
 function calculate()  {
-let hardware_tot = (parseFloat(screencost.value) + parseFloat(playercost.value) +  parseFloat(mcocost.value)) * screenSlider.value;
+
+scr_cost = localStorage.getItem('display_cost') || 0;
+pla_cost = localStorage.getItem('player_cost') || 0;
+other_cost = localStorage.getItem('mco_cost') || 0;
+
+let hardware_tot = (parseFloat(scr_cost) + parseFloat(pla_cost) +  parseFloat(other_cost)) * screenSlider.value;
 let  monthly_power = (((parseFloat(scpower.value/1000) + parseFloat(mppower.value)/1000) * (parseFloat(screenSlider.value))) * (((parseFloat(daySlider.value)* parseFloat(hourSlider.value) * 52) / 12))) * parseFloat(hydroSlider.value)
 let monthly_tot = (parseFloat(saascost.value) + parseFloat(suppcost.value) + parseFloat(creacost.value) + monthly_power) 
 let adSalesMth = ((parseFloat(months) * parseFloat(monthly_tot)) + parseFloat(hardware_tot)) / (parseFloat(margin.value)/100);
-console.log(hardware_tot);
-console.log(months);
 
-console.log(monthly_power);
-console.log(adSalesMth);
-document.getElementById('hardware').innerHTML = hardware_tot.toFixed(2);
+document.getElementById('hardware').innerHTML = formatCurrencyLocal(hardware_tot.toFixed(2));
 document.getElementById('totpower').innerHTML = monthly_power.toFixed(2);
 document.getElementById('monthly').innerHTML = monthly_tot.toFixed(2);
-document.getElementById('adsalemth').innerHTML = adSalesMth.toFixed(2);
-
+document.getElementById('adsalemth').innerHTML = formatCurrencyLocal(adSalesMth.toFixed(2));
 }
 </script>
 </body>
