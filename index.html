@@ -13,6 +13,7 @@
 <div class="tab">
   <button class="tab_on" id="tab1">Pricing Data</button>
   <button class="tab_off" id="tab2">Calculator (Month)</button>
+  <button class="tab_off" id="tab3">Calculator (Margin)</button>
 </div>
 <h2>Hardware</h2>
 <table class="tg">
@@ -68,15 +69,15 @@
 </tr>
   <tr>
     <td>Monthly Sofware Cost (SaaS):</td>
-    <td>$ <input type="number" name="saascost" id="saascost" placeholder="0" value="" pattern="\d*"></td>
+    <td><input type="text" name="saascost" id="saascost" placeholder="0" value="" pattern="\d*"></td>
 </tr>
 <tr>
     <td>Monthly Support Cost (if applicable):</td>
-    <td>$ <input type="number" name="suppcost" id="suppcost" placeholder="0" value="0" pattern="\d*"></td>
+    <td><input type="text" name="suppcost" id="suppcost" placeholder="0" value="0" pattern="\d*"></td>
 </tr>
 <tr>
     <td>Monthly Creative Cost (if applcable):</td>
-    <td>$ <input type="number" name="creacost" id="creacost" placeholder="0" value="0" pattern="\d*"></td>
+    <td><input type="text" name="creacost" id="creacost" placeholder="0" value="0" pattern="\d*"></td>
 </tr>
 <tr>
     <td>
@@ -86,22 +87,22 @@
     <td><div><span id="hydroOutput"></span> (KwHr)</div></td>
 <tr>
     <td>Display Consumption (watts):</td>
-    <td>&nbsp;&nbsp;&nbsp;<input type="number" name="scpower" id="scpower" placeholder="0" value="" pattern="\d*"> w</td>
+    <td><input type="number" name="scpower" id="scpower" placeholder="0" value="" pattern="\d*"> w</td>
 </tr>
 <tr>
     <td>Media Player Consumption (watts):</td>
-    <td>&nbsp;&nbsp;&nbsp;<input type="number" name="mppower" id="mppower" placeholder="0" value="" pattern="\d*"> w</td>
+    <td><input type="number" name="mppower" id="mppower" placeholder="0" value="" pattern="\d*"> w</td>
 </tr>
 <tr>
     <td>Total Monthly Consumption Cost:</td>           
-    <td>$ <span id="totpower">...</span></td>
+    <td><span id="totpower">...</span></td>
 </tr>
 <tr>
     <td>_______________________________</td>
 </tr>
 <tr>
     <td>Total Monthly Operating Costs:</td> 
-    <td>$ <span id="monthly">...</span></td>
+    <td><span id="monthly">...</span></td>
 </tr>
 </table>
 <h2>Store Operations Data</h2>
@@ -122,18 +123,21 @@
 <h2>Store Operations Data</h2>
 <table class="tg">
 <tr>
-    <td>Additional sales required over period:
+    <td>Additional sales required based on selected months:
     <span id="adsalemth">...</span>
+    </td>
+</tr>
+<tr>
+    <td>Additional sales required based on selected percent check lift:
+    <span id="adsalemar">...</span>
     </td>
 </tr>
 </table>
 <script>
-let scr_cost = 0;
-let pla_cost = 0;
-let other_cost = 0;
+var scr_cost, pla_cost, pla_cost, oth_cost, sof_cost, sup_cost, cre_cost;
+scr_cost = pla_cost = oth_cost = sof_cost = sup_cost = cre_cost = adsale_mar = 0;
 /** Load all shared variables prior to doing anything else **/
 function loadVar()  {
-  localStorage.setItem('mco_cost',"0.00");
   lifeOutput.innerHTML = life_Slider.value = localStorage.getItem('life_num') || 7;
   screenOutput.innerHTML = screen_Slider.value = localStorage.getItem('screen_num') || 3;
   hydroOutput.innerHTML = hydro_Slider.value = localStorage.getItem('hydro_cost') || 0.29;
@@ -143,10 +147,10 @@ function loadVar()  {
   display_cost.value = formatCurrencyLocal(localStorage.getItem('display_cost') || "0.00");
   player_cost.value = formatCurrencyLocal(localStorage.getItem('player_cost') || "0.00");
   mco_cost.value = formatCurrencyLocal(localStorage.getItem('mco_cost') || "0.00");
-  
-  saas_cost.value = localStorage.getItem('saas_cost') || 0;
-  supp_cost.value = localStorage.getItem('supp_cost') || 0;
-  crea_cost.value = localStorage.getItem('crea_cost') || 0;
+  saas_cost.value = formatCurrencyLocal(localStorage.getItem('saas_cost') || "0.00");
+  supp_cost.value = formatCurrencyLocal(localStorage.getItem('supp_cost') || "0.00");
+  crea_cost.value = formatCurrencyLocal(localStorage.getItem('crea_cost') || "0.00");
+ 
   scpower_cost.value = localStorage.getItem('scpower_cost') || 0;
   mppower_cost.value = localStorage.getItem('mppower_cost') || 0;
   revenue_num.value = localStorage.getItem('rev_num') || 0;
@@ -157,9 +161,10 @@ function loadVar()  {
 /** Listen for changing tab click **/
 document.getElementById("tab2").addEventListener("click",() =>  {
     window.open("month.html", "_self");});
+document.getElementById("tab3").addEventListener("click",() =>  {
+    window.open("margin.html", "_self");});
 
 /** Listen for changes in the input fields and update accordingly **/
-
 
 let life_Slider = document.getElementById("lifeSlider");
 let life_Output = document.getElementById("lifeOutput");
@@ -230,29 +235,41 @@ mcocost.oninput = function() {
   mcocost.innerHTML = this.value;
   let s = this.value;
   let numberString = s.replace("$", "").replace(",", "");
-  other_cost = parseFloat(numberString).toFixed(2);
-  localStorage.setItem('mco_cost', other_cost);
+  oth_cost = parseFloat(numberString).toFixed(2);
+  localStorage.setItem('mco_cost', oth_cost);
   calculate();}
 
 let saas_cost = document.getElementById("saascost");
 saascost.onfocus = function() {saas_cost.select();}
 saascost.oninput = function() {
+  formatCurrency(this);
   saascost.innerHTML = this.value;
-  localStorage.setItem('saas_cost', saas_cost.value);
+  let s = this.value;
+  let numberString = s.replace("$", "").replace(",", "");
+  sof_cost = parseFloat(numberString).toFixed(2);
+  localStorage.setItem('saas_cost', sof_cost);
   calculate();}
 
 let supp_cost = document.getElementById("suppcost");
 suppcost.onfocus = function() {supp_cost.select();}
 suppcost.oninput = function() {
+  formatCurrency(this);
   suppcost.innerHTML = this.value;
-  localStorage.setItem('supp_cost', supp_cost.value);
+  let s = this.value;
+  let numberString = s.replace("$", "").replace(",", "");
+  sup_cost = parseFloat(numberString).toFixed(2);
+  localStorage.setItem('supp_cost', sup_cost);
   calculate();}
 
 let crea_cost = document.getElementById("creacost");
 creacost.onfocus = function() {crea_cost.select();}
 creacost.oninput = function() {
+  formatCurrency(this);
   creacost.innerHTML = this.value;
-  localStorage.setItem('crea_cost', crea_cost.value);
+  let s = this.value;
+  let numberString = s.replace("$", "").replace(",", "");
+  cre_cost = parseFloat(numberString).toFixed(2);
+  localStorage.setItem('crea_cost', cre_cost);
   calculate();}
 
 let scpower_cost = document.getElementById("scpower");
@@ -326,17 +343,26 @@ function calculate()  {
 
 scr_cost = localStorage.getItem('display_cost') || 0;
 pla_cost = localStorage.getItem('player_cost') || 0;
-other_cost = localStorage.getItem('mco_cost') || 0;
+oth_cost = localStorage.getItem('mco_cost') || 0;
+sof_cost = localStorage.getItem('saas_cost') || 0;
+sup_cost = localStorage.getItem('supp_cost') || 0;
+cre_cost = localStorage.getItem('crea_cost') || 0;
+adsale_mar = parseFloat(localStorage.getItem('adSales_mar') || 0);
+console.log(adsale_mar)
 
-let hardware_tot = (parseFloat(scr_cost) + parseFloat(pla_cost) +  parseFloat(other_cost)) * screenSlider.value;
+let hardware_tot = (parseFloat(scr_cost) + parseFloat(pla_cost) +  parseFloat(oth_cost)) * screenSlider.value;
 let  monthly_power = (((parseFloat(scpower.value/1000) + parseFloat(mppower.value)/1000) * (parseFloat(screenSlider.value))) * (((parseFloat(daySlider.value)* parseFloat(hourSlider.value) * 52) / 12))) * parseFloat(hydroSlider.value)
-let monthly_tot = (parseFloat(saascost.value) + parseFloat(suppcost.value) + parseFloat(creacost.value) + monthly_power) 
+let monthly_tot = (parseFloat(sof_cost) + parseFloat(sup_cost) + parseFloat(cre_cost) + monthly_power) 
 let adSalesMth = ((parseFloat(months) * parseFloat(monthly_tot)) + parseFloat(hardware_tot)) / (parseFloat(margin.value)/100);
+localStorage.setItem('adSales_mth', adSalesMth);
+localStorage.setItem('tot_power', monthly_power);
+localStorage.setItem('hard_total', hardware_tot);
 
 document.getElementById('hardware').innerHTML = formatCurrencyLocal(hardware_tot.toFixed(2));
-document.getElementById('totpower').innerHTML = monthly_power.toFixed(2);
-document.getElementById('monthly').innerHTML = monthly_tot.toFixed(2);
+document.getElementById('totpower').innerHTML = formatCurrencyLocal(monthly_power.toFixed(2));
+document.getElementById('monthly').innerHTML = formatCurrencyLocal(monthly_tot.toFixed(2));
 document.getElementById('adsalemth').innerHTML = formatCurrencyLocal(adSalesMth.toFixed(2));
+document.getElementById('adsalemar').innerHTML = formatCurrencyLocal(adsale_mar.toFixed(2)); 
 }
 </script>
 </body>
