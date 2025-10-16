@@ -11,17 +11,21 @@
   <h1>DMB ROI CALCULATOR </h1>
   <h2>Months vs Average Check Lift Scenario</h2>
 <div class="tab">
-  <button class="tab_off" id="tab1">Pricing Data</button>
+  <button class="tab_off" id="tab1">Pricing / Ops Data</button>
   <button class="tab_on" id="tab2">Calculator (Month)</button>
-  <button class="tab_off" id="tab3">Calculator (%)</button>
+  <button class="tab_off" id="tab3">Calculator (%&#8673)</button>
 </div>
 <h2>Store Operating Conditions</h2>
 <table class="tg">
-
 <tr>
-  <td class="item" rowspan="2">
+  <td class="item" colspan="2" >
       <legend for="months">MONTHS VS AVERAGE CHECK</legend>
-      <input type="number" class="textbox" id="months" name="months" min="0" max="120" value="36"></div> </td>
+      <input type="number" class="textbox" id="months" name="months" min="0" max="120" value="36"></td>
+</tr>
+<tr>
+<td class="item" colspan="2">
+      <legend for="breakeven">Use LifeSpan as Break Even</legend>
+      <input type="checkbox" class="textbox" id="breakeven" name="breakeven"></td>
 </tr>
 </table>
 <table class="tg">
@@ -85,9 +89,28 @@
   </tr>
 </table>
 <script>
-/** Load all shared variables prior to doing anything else **/
+/** Load a few required variables from localStorage **/
+var avgcheck = parseFloat(localStorage.getItem('che_num') || 50);
+var revenue = parseFloat(localStorage.getItem('rev_num') || 0);
+var lifeSpan = parseFloat(localStorage.getItem('life_num') || 7);
+var margin = parseFloat(localStorage.getItem('mar_num') || 50);
+var saasCost = parseFloat(localStorage.getItem('saas_cost') || 0);
+var suppCost = parseFloat(localStorage.getItem('supp_cost') || 0);
+var creaCost = parseFloat(localStorage.getItem('crea_cost') || 0);
+var pwrCost = parseFloat(localStorage.getItem('tot_power') || 0);
+var hardware_tot = parseFloat(localStorage.getItem('hard_total') || 0);
+var labor_tot = parseFloat(localStorage.getItem('labor_total') || 0);
+var upfront_tot = hardware_tot + labor_tot;
+
 function loadVar()  {
-  months_num.value = localStorage.getItem('months_num') || 36; 
+  months_num.value = localStorage.getItem('months_num') || 36;
+  breakevenChecked = localStorage.getItem('brevchkbxmt') || true;
+  const breakevenCheckbox = document.getElementById('breakeven');
+  if(breakevenChecked === "false") {
+    breakevenCheckbox.checked = false;}
+  else {
+    breakevenCheckbox.checked = true;}
+  breakeven();
 }
 
 /** Listen for changing tab click **/
@@ -99,48 +122,56 @@ document.getElementById("tab3").addEventListener("click",() =>  {
 /** Listen for changes in the input fields and update accordingly **/
 let months_num = document.getElementById("months");
 months.innerHTML = months_num.value;
-months.onfocus = function() {months_num.select();}
+months.onfocus = function() {
+  months_num.select();
+  localStorage.setItem('brevchkbxmt', false);
+  const breakevenCheckbox = document.getElementById('breakeven');
+  breakevenCheckbox.checked = false;
+  }
 months.oninput = function() {
   months.innerHTML = this.value;
   localStorage.setItem('months_num', months_num.value);
   calculate();}
 
+/** Listen for lifespan breakeven checkbox and update accordingly **/
+document.getElementById("breakeven").addEventListener("click",() =>  {
+  const breakevenCheckbox = document.getElementById('breakeven');
+  const isChecked = breakevenCheckbox.checked;
+  breakevenChecked = localStorage.getItem('brevchkbxmt') || true;
+  if(isChecked) {
+    localStorage.setItem('brevchkbxmt', true);
+    breakevenCheckbox.checked = true;}
+  else {
+    localStorage.setItem('brevchkbxmt', false);
+    breakevenCheckbox.checked = false;
+  }
+  breakeven();});
 
 /** Calculate total and display **/
 function calculate()  {
-
+const breakevenCheckbox = document.getElementById('breakeven');
+const isChecked = breakevenCheckbox.checked;
 let lifeSpan = localStorage.getItem('life_num') || 7;
 let revenue = localStorage.getItem('rev_num') || 0;
 let avgcheck = localStorage.getItem('che_num') || 50;
 let weeklyTrans = (revenue / avgcheck) / 52;
 let monthlyTrans = (revenue / avgcheck) / 12;
 let annualTrans = (revenue / avgcheck); 
-let hardware_tot = localStorage.getItem('hard_total') || 0;
-let saasCost = localStorage.getItem('saas_cost') || 0;
-let suppCost = localStorage.getItem('supp_cost') || 0;
-let creaCost = localStorage.getItem('crea_cost') || 0;
-let pwrCost = localStorage.getItem('tot_power') || 0;
-let margin = localStorage.getItem('mar_num') || 50; 
 let totalTrans = monthlyTrans * (months.value);
 let monthly_tot = (parseFloat(saasCost) + parseFloat(suppCost) + parseFloat(creaCost) + parseFloat(pwrCost));
-
-
-
-let adSalesMth = ((parseFloat(months_num.value) * parseFloat(monthly_tot)) + parseFloat(hardware_tot)) / (parseFloat(margin)/100);
+let adSalesMth = ((parseFloat(months_num.value) * parseFloat(monthly_tot)) + upfront_tot) / (parseFloat(margin)/100);
 localStorage.setItem('adSales_mth', adSalesMth);
-let adprofit = ((parseFloat(months_num.value) * parseFloat(monthly_tot)) + parseFloat(hardware_tot));
+let adprofit = ((parseFloat(months_num.value) * parseFloat(monthly_tot)) + upfront_tot);
 let requiredLiftD =  adSalesMth/totalTrans;
 if(requiredLiftD == Infinity || isNaN(requiredLiftD)){requiredLiftD = 0;}
 let requiredLiftP =  requiredLiftD / parseFloat(avgcheck);
 let profit = ((((requiredLiftD*((margin)/100))*annualTrans))*((lifeSpan-(months_num.value)/12)))-((monthly_tot)*(((lifeSpan*12)-months.value)));
-
 /** Calculate additional monthly sales generated based on selected payback period (number of months) **/
 let ad_mthsales = (monthlyTrans * requiredLiftD);
 /** Calculate profit generated by additionnal monthly sales based on margin **/
 let mthsalesprofit = ad_mthsales * (margin / 100);
 /** Calculate Net profit generated by substracted monthly operating costs **/
 let mthlyNet = mthsalesprofit - monthly_tot;
-
 document.getElementById("opera").innerHTML = formatCurrencyLocal(parseFloat(monthly_tot).toFixed(2));
 document.getElementById("capex").innerHTML = formatCurrencyLocal(parseFloat(hardware_tot).toFixed(2));
 document.getElementById("avgchk").innerHTML = formatCurrencyLocal(parseFloat(avgcheck).toFixed(2));
@@ -172,6 +203,20 @@ function formatCurrencyLocal(num) {
     // Update the input value with the formatted value and add $ symbol
     num = "$"+formattedValue;
     return num;
+}
+/** Function to set months at the lifespan break even if checkbox is selected **/
+function breakeven()  {
+  let lifeSpan = localStorage.getItem('life_num') || 7;
+  let currentMonth = document.getElementById("months");
+  const breakevenCheckbox = document.getElementById('breakeven');
+  const isChecked = breakevenCheckbox.checked;
+  if(isChecked) {
+    currentMonth.value = lifeSpan * 12;
+  }
+  else{
+  currentMonth.value = localStorage.getItem('months_num') || 36;
+  }
+  calculate();
 }
 </script>
 </body>
