@@ -16,15 +16,21 @@
   <button class="tab_off" id="tab3">Calculator (%&#8673)</button>
 </div>
 <h2>Store Operating Conditions</h2>
+
+<!-- Testing Plus and Minus buttons for months selector -->
+<div class="number-input">
+  <button class="spinner decrement">-</button>
+  <input type="number" id="test" name="Quantity[47]" value="36" class="qtyInputLoose" min="0" max="120">
+  <button class="spinner increment">+</button>
+</div>
+
 <table class="tg">
 <tr>
-  <td class="item" colspan="2" >
-      <legend for="months">MONTHS VS AVERAGE CHECK</legend>
+  <td class="item" colspan="2">MONTHS VS AVERAGE CHECK
       <input type="number" class="textbox" id="months" name="months" min="0" max="120" value="36"></td>
 </tr>
 <tr>
-<td class="item" colspan="2">
-      <legend for="breakeven">Use LifeSpan as Break Even</legend>
+<td class="item" colspan="2">Use LifeSpan as Break Even
       <input type="checkbox" class="textbox" id="breakeven" name="breakeven"></td>
 </tr>
 </table>
@@ -46,7 +52,7 @@
     <td><span id="opera"> ...</span></td>
   </tr>
   <tr>
-    <td>CapEx:  </td>
+    <td>CapEx & Labor:  </td>
     <td><span id="capex"> ...</span></td>
   </tr>
   <tr>
@@ -84,11 +90,24 @@
 
 
   <tr>
-    <td><div>Profit Store is Loosing Over<br><span id="period">...</span> Year Equipment Lifspan:  </div></td>
+    <td><div>Profit Over <span id="period">...</span> Year Equipment Lifspan:  </div></td>
     <td><span id="profit">...</span> </td>
   </tr>
 </table>
 <script>
+
+/** Testing Plus and Minus buttons for months selector **/
+const input = document.querySelector('input[type=number]')
+const increment = () => {
+  input.value = Number(input.value) + 1
+}
+const decrement = () => {
+  input.value = Number(input.value) - 1
+}
+document.querySelector('.spinner.increment').addEventListener('click', increment)
+document.querySelector('.spinner.decrement').addEventListener('click', decrement)
+
+
 /** Load a few required variables from localStorage **/
 var avgcheck = parseFloat(localStorage.getItem('che_num') || 50);
 var revenue = parseFloat(localStorage.getItem('rev_num') || 0);
