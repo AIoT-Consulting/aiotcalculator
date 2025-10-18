@@ -10,8 +10,9 @@ body{
   margin: auto auto;
   min-width: 800px; 
 }
+
 tr, td {
-  border: 0px solid grey;
+  border: 1px solid grey;
 }
 .tab    {
     padding-top: 30px;
@@ -19,26 +20,29 @@ tr, td {
 }
 /* Style the buttons inside the tab */
 .tab_on {
-  background-color: rgb(174, 170, 248);
+  background-color: rgb(145, 140, 253);
   border: none;
+  width: 175px;
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
   outline: none;
   cursor: pointer;
   padding: 14px 16px;
+  padding-top: 15px;
   transition: 0.6s;
-  font-size: 17px;
+  font-size: 16px;
 }
 .tab_off {
   background-color: rgb(210, 208, 255);
   border: none;
+  width: 175px;
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
   outline: none;
   cursor: pointer;
   padding: 14px 16px;
   transition: 0.6s;
-  font-size: 17px;
+  font-size: 15px;
 }
 .tg {
   display: block;
@@ -49,13 +53,56 @@ tr, td {
 
 }
 input[type=number]  {
-  width: 80px;
+  width: 100px;
+}
+input[type=text]  {
+  width: 100px;
+  color: black
+}
+#mth {
+  background-color: green;
+}
+#period {
+  font-weight: bolder;
+  font-size: 24px;
 }
 
 /* ensures the increment/decrement arrows always display on months selector*/
 #months::-webkit-inner-spin-button, 
-#months::-webkit-outer-spin-button {
+#months::-webkit-outer-spin-button,
+#increase::-webkit-inner-spin-button,
+#increase::-webkit-outer-spin-button
+ {
   opacity: 1;
+}
+
+
+/** Testing Plus and Minus buttons for months selector **/
+input#test::-webkit-inner-spin-button,
+input#test::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.number-input {
+  display: flex;
+}
+input {
+  width: 40px;
+  border: solid 1px lightgrey;
+  border-radius: 0;
+  text-align: center
+}
+.spinner {
+  border: solid 1px lightgrey;
+}
+.spinner:hover {
+  background: lightgrey;
+}
+.spinner:first-child {
+  border-radius: 3px 0 0 3px;
+}
+.spinner:last-child {
+  border-radius: 0 3px 3px 0;
 }
 
 
@@ -117,4 +164,10 @@ input[type="range"]:active::-moz-range-thumb {
 }
 input[type="range"]:focus::-moz-range-thumb {
   box-shadow: 0 0 0 13px rgba(255,85,0, .2)    
+}
+
+.value {
+  font-size: 26px;    
+  width: 50px;
+  text-align: center;
 }
