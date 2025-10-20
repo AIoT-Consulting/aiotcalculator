@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="styles/style.css" />
   <link rel="icon" type="image/x-icon" href="https://aiot-consulting.github.io/Static-Assets/favicon.ico">
 </head>
-<body onload="loadVar(); calculate(); checkFields();">
+<body onload="loadVar(); calculate();">
   <h1>DMB ROI CALCULATOR </h1>
   <h2>Capital Expendatures and Operating Conditions</h2>
 <div class="tab">
@@ -132,15 +132,15 @@
 <table class="tg">
 <tr>
     <td>Annual Revenue:</td>
-    <td>$&nbsp;&nbsp;<input type="number" name="revenue" id="revenue" placeholder="0" value="0" pattern="\d*"></td>
+    <td>$&nbsp;&nbsp;<input type="number" name="revenue" id="revenue" placeholder="0" value="0" pattern="\d*" required></td>
 </tr>
 <tr>
     <td>Average Check:</td>
-    <td>$&nbsp;&nbsp;<input type="number" name="check" id="check" placeholder="0" value="0" pattern="\d*"></td>
+    <td>$&nbsp;&nbsp;<input type="number" name="check" id="check" placeholder="0" value="0" pattern="\d*" required></td>
 </tr>
 <tr>
     <td>Average Margin:</td>
-    <td>% <input type="number" name="margin" id="margin" placeholder="0" value="0" pattern="\d*"></td>
+    <td>% <input type="number" name="margin" id="margin" placeholder="0" value="0" pattern="\d*" required></td>
 </tr>
 </table>
 <h2>Store Operations Data</h2>
@@ -160,36 +160,7 @@
 var scr_cost, pla_cost, oth_cost, ila_cost, ela_cost, ota_cost, sof_cost, sup_cost, cre_cost;
 scr_cost=pla_cost=oth_cost=ila_cost=ela_cost=ota_cost=sof_cost=sup_cost=cre_cost=adsale_mar=0;
 
-/** Check to see if Store Ops Data has been entered and enable month and margin tabs **/
-const monthButton = document.getElementById("tab2");
-const marginButton = document.getElementById("tab3");
-const revenueInput = document.getElementById("revenue");
-const marginInput = document.getElementById("margin");
-const checkInput = document.getElementById("check");
-// Attach event listeners to the input fields
-revenueInput.addEventListener('input', checkFields);
-marginInput.addEventListener('input', checkFields);
-checkInput.addEventListener('input', checkFields);
-/** Function called to check if critical fields have values entered */
-function checkFields() {
-  if (revenueInput.value < 1 || marginInput.value < 1 || checkInput.value < 1) {
-      monthButton.disabled = true;
-      marginButton.disabled = true;
-  } else {
-      monthButton.disabled = false;
-      marginButton.disabled = false;
-  }
-}
-document.getElementById('tab2').addEventListener('mouseenter', function() {
-    if (monthButton.disabled) {
-      alert('This button is disabled! You must first enter ALL values in the Store Operations Data Section');
-    } 
-});
-document.getElementById('tab3').addEventListener('onmousedown', function() {
-    if (monthButton.disabled) {
-      alert('This button is disabled! You must first enter ALL values in the Store Operations Data Section');
-    } 
-});
+
 
 /** Load all shared variables prior to doing anything else **/
 function loadVar()  {
@@ -216,11 +187,13 @@ function loadVar()  {
   margin_num.value = localStorage.getItem('mar_num') || 0;
   months = localStorage.getItem('months_num') || 36;
 }
+
+
 /** Listen for changing tab click **/
 document.getElementById("tab2").addEventListener("click",() =>  {
-    window.open("month.html", "_self");});
+    tab2()});
 document.getElementById("tab3").addEventListener("click",() =>  {
-    window.open("margin.html", "_self");});
+    tab3();});
 
 /** Listen for changes in the input fields and update accordingly **/
 
@@ -430,7 +403,6 @@ function formatCurrencyLocal(num) {
 
 /** Calculate total and display **/
 function calculate()  {
-
 scr_cost = parseFloat(localStorage.getItem('display_cost') || 0);
 pla_cost = parseFloat(localStorage.getItem('player_cost') || 0);
 oth_cost = parseFloat(localStorage.getItem('mco_cost') || 0);
@@ -459,7 +431,44 @@ document.getElementById('totpower').innerHTML = formatCurrencyLocal(monthly_powe
 document.getElementById('monthly').innerHTML = formatCurrencyLocal(monthly_tot.toFixed(2));
 document.getElementById('adsalemth').innerHTML = formatCurrencyLocal(adSalesMth.toFixed(2));
 document.getElementById('adsalemar').innerHTML = formatCurrencyLocal(adsale_mar.toFixed(2)); 
+
+const revenueInput = document.getElementById("revenue");
+const marginInput = document.getElementById("margin");
+const checkInput = document.getElementById("check");
+const monthButton = document.getElementById("tab2");
+const marginButton = document.getElementById("tab3");
+if (revenueInput.value < 1 || marginInput.value < 1 || checkInput.value < 1) {
+  monthButton.style.color = "grey"; 
+  marginButton.style.color = "grey";
+  console.log("grey");
+} else {
+  monthButton.style.color = "black"; 
+  marginButton.style.color = "black";
+  console.log("black");
+  }
 }
+
+function tab2() {
+  const revenueInput = document.getElementById("revenue");
+  const marginInput = document.getElementById("margin");
+  const checkInput = document.getElementById("check");
+  if (revenueInput.value < 1 || marginInput.value < 1 || checkInput.value < 1) {
+      alert("Must complete all fields in the Stre Ops Data Section");
+  } else {
+      window.open("month.html", "_self");
+  }
+}
+function tab3() {
+  const revenueInput = document.getElementById("revenue");
+  const marginInput = document.getElementById("margin");
+  const checkInput = document.getElementById("check");
+  if (revenueInput.value < 1 || marginInput.value < 1 || checkInput.value < 1) {
+      alert("You must complete all fields in the Store Operation Data Section in order to use the calculators");
+  } else {
+      window.open("margin.html", "_self");
+  }
+}
+
 </script>
 </body>
 </html>
