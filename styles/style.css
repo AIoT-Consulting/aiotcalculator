@@ -22,6 +22,7 @@ tr, td {
 .tab_on {
   background-color: rgb(145, 140, 253);
   border: none;
+  color:black;
   width: 175px;
   border-top-right-radius: 5px;
   border-top-left-radius: 5px;
@@ -34,6 +35,7 @@ tr, td {
 }
 .tab_off {
   background-color: rgb(210, 208, 255);
+  color:black;
   border: none;
   width: 175px;
   border-top-right-radius: 5px;
@@ -52,9 +54,11 @@ tr, td {
   padding-bottom: 30px;
 
 }
-input[type=number]  {
-  width: 100px;
+.QtyNum {
+  width: 50px;
+  border-radius: 3px;
 }
+
 input[type=text]  {
   width: 100px;
   color: black
@@ -67,22 +71,15 @@ input[type=text]  {
   font-size: 24px;
 }
 
-/* ensures the increment/decrement arrows always display on months selector*/
-#months::-webkit-inner-spin-button, 
-#months::-webkit-outer-spin-button,
+/* ensures the increment/decrement arrows do not display on months selector*/
+#mths::-webkit-inner-spin-button, 
+#mths::-webkit-outer-spin-button,
 #increase::-webkit-inner-spin-button,
 #increase::-webkit-outer-spin-button
  {
-  opacity: 1;
+  opacity: 0;
 }
 
-
-/** Testing Plus and Minus buttons for months selector **/
-input#test::-webkit-inner-spin-button,
-input#test::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
 .number-input {
   display: flex;
 }
