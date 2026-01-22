@@ -11,7 +11,6 @@
   <h1>DMB ROI CALCULATOR </h1>
   <h2>Capital Expendatures and Operating Conditions</h2>
 <div class="tab">
-
   <button class="tab_on" id="tab1">Pricing / Ops Data</button>
   <button class="tab_off" id="tab2">Calculator (Month)</button>
   <button class="tab_off" id="tab3">Calculator (%&#8673)</button>
@@ -132,33 +131,20 @@
 <table class="tg">
 <tr>
     <td>Annual Revenue:</td>
-    <td>$&nbsp;&nbsp;<input type="number" name="revenue" id="revenue" placeholder="0" value="0" pattern="\d*" required></td>
+    <td>$&nbsp;&nbsp;<input type="text" name="revenue" id="revenue" placeholder="0" value="0" pattern="\d*" required></td>
 </tr>
 <tr>
     <td>Average Check:</td>
-    <td>$&nbsp;&nbsp;<input type="number" name="check" id="check" placeholder="0" value="0" pattern="\d*" required></td>
+    <td>$&nbsp;&nbsp;<input type="text" name="check" id="check" placeholder="0" value="0" pattern="\d*" required></td>
 </tr>
 <tr>
     <td>Average Margin:</td>
     <td>% <input type="number" name="margin" id="margin" placeholder="0" value="0" pattern="\d*" required></td>
 </tr>
 </table>
-<h2>Store Operations Data</h2>
-<table class="tg">
-<tr>
-    <td>Additional sales required based on selected months:
-    <span id="adsalemth">...</span>
-    </td>
-</tr>
-<tr>
-    <td>Additional sales required based on selected percent check lift:
-    <span id="adsalemar">...</span>
-    </td>
-</tr>
-</table>
 <script>
-var scr_cost, pla_cost, oth_cost, ila_cost, ela_cost, ota_cost, sof_cost, sup_cost, cre_cost;
-scr_cost=pla_cost=oth_cost=ila_cost=ela_cost=ota_cost=sof_cost=sup_cost=cre_cost=adsale_mar=0;
+var scr_cost, pla_cost, oth_cost, ila_cost, ela_cost, ota_cost, sof_cost, sup_cost, cre_cost, rev_num, chk_num;
+scr_cost=pla_cost=oth_cost=ila_cost=ela_cost=ota_cost=sof_cost=sup_cost=cre_cost=adsale_mar=rev_num=chk_num=0;
 
 
 
@@ -179,16 +165,13 @@ function loadVar()  {
   saas_cost.value = formatCurrencyLocal(localStorage.getItem('saas_cost') || "0.00");
   supp_cost.value = formatCurrencyLocal(localStorage.getItem('supp_cost') || "0.00");
   crea_cost.value = formatCurrencyLocal(localStorage.getItem('crea_cost') || "0.00");
- 
   scpower_cost.value = localStorage.getItem('scpower_cost') || 0;
   mppower_cost.value = localStorage.getItem('mppower_cost') || 0;
-  revenue_num.value = localStorage.getItem('rev_num') || 0;
-  check_num.value = localStorage.getItem('che_num') || 0;
+  revenue_num.value = formatCurrencyLocal(localStorage.getItem('rev_num') || "0.00");
+  check_num.value = formatCurrencyLocal(localStorage.getItem('che_num') || 0);
   margin_num.value = localStorage.getItem('mar_num') || 0;
   months = localStorage.getItem('months_num') || 36;
 }
-
-
 /** Listen for changing tab click **/
 document.getElementById("tab2").addEventListener("click",() =>  {
     tab2()});
@@ -196,7 +179,6 @@ document.getElementById("tab3").addEventListener("click",() =>  {
     tab3();});
 
 /** Listen for changes in the input fields and update accordingly **/
-
 let life_Slider = document.getElementById("lifeSlider");
 let life_Output = document.getElementById("lifeOutput");
 lifeOutput.innerHTML = life_Slider.value;
@@ -350,18 +332,27 @@ mppower.oninput = function() {
   localStorage.setItem('mppower_cost', mppower_cost.value);
   calculate();}
 
+
 let revenue_num = document.getElementById("revenue");
 revenue.onfocus = function() {revenue_num.select();}
 revenue.oninput = function() {
+  formatCurrency(this);
   revenue.innerHTML = this.value;
-  localStorage.setItem('rev_num', revenue_num.value);
+  let s = this.value;
+  let numberString = s.replace("$", "").replace(",", "");
+  rev_num = parseFloat(numberString).toFixed(2); 
+  localStorage.setItem('rev_num', rev_num);
   calculate();}
 
 let check_num = document.getElementById("check");
 check.onfocus = function() {check_num.select();}
 check.oninput = function() {
+  formatCurrency(this);
   check.innerHTML = this.value;
-  localStorage.setItem('che_num', check_num.value);
+  let s = this.value;
+  let numberString = s.replace("$", "").replace(",", "");
+  chk_num = parseFloat(numberString).toFixed(2);
+  localStorage.setItem('che_num', chk_num);
   calculate();}
 
 let margin_num = document.getElementById("margin");
@@ -412,64 +403,65 @@ ota_cost = parseFloat(localStorage.getItem('othlab_cost') || 0);
 sof_cost = localStorage.getItem('saas_cost') || 0;
 sup_cost = localStorage.getItem('supp_cost') || 0;
 cre_cost = localStorage.getItem('crea_cost') || 0;
-adsale_mar = parseFloat(localStorage.getItem('adSales_mar') || 0);
-
 let hardware_tot = (scr_cost + pla_cost +  oth_cost) * screenSlider.value;
 let labor_tot = ila_cost + ela_cost +  ota_cost;
-
 let  monthly_power = (((parseFloat(scpower.value/1000) + parseFloat(mppower.value)/1000) * (parseFloat(screenSlider.value))) * (((parseFloat(daySlider.value)* parseFloat(hourSlider.value) * 52) / 12))) * parseFloat(hydroSlider.value)
 let monthly_tot = (parseFloat(sof_cost) + parseFloat(sup_cost) + parseFloat(cre_cost) + monthly_power) 
 let adSalesMth = ((parseFloat(months) * parseFloat(monthly_tot)) + hardware_tot + labor_tot) / (parseFloat(margin.value)/100);
+if(isNaN(adSalesMth)) {adSalesMth = 0;}
+let adSalesMar = parseFloat(localStorage.getItem('adSales_mar') || 0);
 localStorage.setItem('adSales_mth', adSalesMth);
 localStorage.setItem('tot_power', monthly_power);
 localStorage.setItem('hard_total', hardware_tot);
 localStorage.setItem('labor_total', labor_tot);
-
 document.getElementById('hardware').innerHTML = formatCurrencyLocal(hardware_tot.toFixed(2));
 document.getElementById('labor').innerHTML = formatCurrencyLocal(labor_tot.toFixed(2));
 document.getElementById('totpower').innerHTML = formatCurrencyLocal(monthly_power.toFixed(2));
 document.getElementById('monthly').innerHTML = formatCurrencyLocal(monthly_tot.toFixed(2));
-document.getElementById('adsalemth').innerHTML = formatCurrencyLocal(adSalesMth.toFixed(2));
-document.getElementById('adsalemar').innerHTML = formatCurrencyLocal(adsale_mar.toFixed(2)); 
-
+//** The following section is used for activating or de-activating the tabs **//
 const revenueInput = document.getElementById("revenue");
 const marginInput = document.getElementById("margin");
 const checkInput = document.getElementById("check");
 const monthButton = document.getElementById("tab2");
 const marginButton = document.getElementById("tab3");
-if (revenueInput.value < 1 || marginInput.value < 1 || checkInput.value < 1) {
+// Need to convert Annual Revenue and Average Check from Strings to Numbers in order to use in Tab Blocking Checks
+let revenueFormated = revenueInput.value.replace("$", "").replace(",", "");
+let checkFormated = checkInput.value.replace("$", "").replace(",", "");
+// If any of the Store Operations Data values are 0, then grey out the calculator tabs
+if (revenueFormated < 1 || marginInput.value < 1 || checkFormated < 1) {
   monthButton.style.color = "grey"; 
   marginButton.style.color = "grey";
-  console.log("grey");
 } else {
   monthButton.style.color = "black"; 
   marginButton.style.color = "black";
-  console.log("black");
   }
 }
-
+// Alert user if Store Data is missing or send to selected calculator
 function tab2() {
   const revenueInput = document.getElementById("revenue");
   const marginInput = document.getElementById("margin");
   const checkInput = document.getElementById("check");
-  if (revenueInput.value < 1 || marginInput.value < 1 || checkInput.value < 1) {
+  let revenueFormated = revenueInput.value.replace("$", "").replace(",", "");
+  let checkFormated = checkInput.value.replace("$", "").replace(",", "");
+  if (revenueFormated < 1 || marginInput.value < 1 || checkFormated < 1) {
       alert("You must complete all fields in the Store Operation Data Section in order to use the calculators");
   } else {
       window.open("month.html", "_self");
   }
 }
+// Alert user if Store Data is missing or send to selected calculator
 function tab3() {
   const revenueInput = document.getElementById("revenue");
   const marginInput = document.getElementById("margin");
   const checkInput = document.getElementById("check");
-  if (revenueInput.value < 1 || marginInput.value < 1 || checkInput.value < 1) {
+  let revenueFormated = revenueInput.value.replace("$", "").replace(",", "");
+  let checkFormated = checkInput.value.replace("$", "").replace(",", "");
+  if (revenueFormated < 1 || marginInput.value < 1 || checkFormated < 1) {
       alert("You must complete all fields in the Store Operation Data Section in order to use the calculators");
   } else {
       window.open("margin.html", "_self");
   }
 }
-
 </script>
 </body>
 </html>
-
