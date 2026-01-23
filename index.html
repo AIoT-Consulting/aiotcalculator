@@ -168,7 +168,7 @@ function loadVar()  {
   scpower_cost.value = localStorage.getItem('scpower_cost') || 0;
   mppower_cost.value = localStorage.getItem('mppower_cost') || 0;
   revenue_num.value = formatCurrencyLocal(localStorage.getItem('rev_num') || "0.00");
-  check_num.value = formatCurrencyLocal(localStorage.getItem('che_num') || 0);
+  check_num.value = formatCurrencyLocal(localStorage.getItem('che_num') || "0.00");
   margin_num.value = localStorage.getItem('mar_num') || 0;
   months = localStorage.getItem('months_num') || 36;
 }
@@ -468,3 +468,4 @@ function tab3() {
 </script>
 </body>
 </html>
+
