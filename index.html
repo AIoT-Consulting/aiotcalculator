@@ -90,7 +90,7 @@
     <td><div><span id="hourOutput"></span> hours</div></td>
 </tr>
   <tr>
-    <td>Monthly Sofware Cost (SaaS):</td>
+    <td>Monthly Software Cost (SaaS):</td>
     <td><input type="text" name="saascost" id="saascost" placeholder="0" value="" pattern="\d*"></td>
 </tr>
 <tr>
@@ -337,9 +337,11 @@ let revenue_num = document.getElementById("revenue");
 revenue.onfocus = function() {revenue_num.select();}
 revenue.oninput = function() {
   formatCurrency(this);
+  console.log(this.value);
   revenue.innerHTML = this.value;
   let s = this.value;
   let numberString = s.replace("$", "").replace(",", "");
+  console.log(numberString);
   rev_num = parseFloat(numberString).toFixed(2); 
   localStorage.setItem('rev_num', rev_num);
   calculate();}
@@ -379,7 +381,8 @@ function formatCurrency(input) {
 // The formatCurrency function for value loaded from localStorage
 function formatCurrencyLocal(num) {
     // Remove non-numeric characters from the input value
-    let value = num.replace(/[^\d]+/g, '');
+    let numAsString = String(num);
+    let value = numAsString.replace(/[^\d]+/g, '');
     // Split the value into whole and decimal parts
     const wholePart = value.slice(0, -2);
     const decimalPart = value.slice(-2);
@@ -429,8 +432,8 @@ let revenueFormated = revenueInput.value.replace("$", "").replace(",", "");
 let checkFormated = checkInput.value.replace("$", "").replace(",", "");
 // If any of the Store Operations Data values are 0, then grey out the calculator tabs
 if (revenueFormated < 1 || marginInput.value < 1 || checkFormated < 1) {
-  monthButton.style.color = "grey"; 
-  marginButton.style.color = "grey";
+  monthButton.style.color = "#8D8F8F"; 
+  marginButton.style.color = "#8D8F8F";
 } else {
   monthButton.style.color = "black"; 
   marginButton.style.color = "black";
