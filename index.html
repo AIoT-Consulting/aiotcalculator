@@ -155,7 +155,6 @@ function loadVar()  {
   hydroOutput.innerHTML = hydro_Slider.value = localStorage.getItem('hydro_cost') || 0.29;
   dayOutput.innerHTML = day_Slider.value = localStorage.getItem('day_num') || 5;
   hourOutput.innerHTML = hour_Slider.value = localStorage.getItem('hour_num') || 8;
-  
   display_cost.value = formatCurrencyLocal(localStorage.getItem('display_cost') || "0.00");
   player_cost.value = formatCurrencyLocal(localStorage.getItem('player_cost') || "0.00");
   mco_cost.value = formatCurrencyLocal(localStorage.getItem('mco_cost') || "0.00");
@@ -341,8 +340,8 @@ revenue.oninput = function() {
   revenue.innerHTML = this.value;
   let s = this.value;
   let numberString = s.replace("$", "").replace(",", "");
-  console.log(numberString);
-  rev_num = parseFloat(numberString).toFixed(2); 
+  rev_num = formatCurrencyLocal(numberString);
+  console.log(rev_num); 
   localStorage.setItem('rev_num', rev_num);
   calculate();}
 
@@ -353,7 +352,7 @@ check.oninput = function() {
   check.innerHTML = this.value;
   let s = this.value;
   let numberString = s.replace("$", "").replace(",", "");
-  chk_num = parseFloat(numberString).toFixed(2);
+  chk_num = formatCurrencyLocal(numberString);
   localStorage.setItem('che_num', chk_num);
   calculate();}
 
@@ -468,4 +467,3 @@ function tab3() {
 </script>
 </body>
 </html>
-
