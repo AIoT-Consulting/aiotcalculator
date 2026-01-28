@@ -173,8 +173,9 @@ input[type="range"]:focus::-moz-range-thumb {
   text-align: center;
 }
 #scpower, #mppower  {
-  width: 65px;
+  width: 75px;
 }
 #revenue  {
   width: 150px;
 }
+
