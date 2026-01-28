@@ -16,19 +16,16 @@
   <button class="tab_off" id="tab3">Calculator (%&#8673)</button>
 </div>
 <h2>Store Operating Conditions</h2>
-
 <!-- Testing Plus and Minus buttons for months selector -->
 <div class="number-input">
-
 </div>
-
 <table class="tg">
 <tr>
   <td class="item" colspan="2">MONTHS VS AVERAGE CHECK:
   <button class="spinner decrement">-</button>
   <input type="number" class="QtyNum" id="mths" name="mths" value="36" min="0" max="120">
   <button class="spinner increment">+</button>
-      </td>
+  </td>
 </tr>
 <tr>
 <td class="item" colspan="2">Use LifeSpan as Break Even
@@ -85,7 +82,7 @@
     <td><span id="adprofit"> ...</span></td>
   </tr>
   <tr>
-    <td>Additional Sales Required:  </td>
+    <td>Additional Sales Required (over period):  </td>
     <td><span id="adsales"> ...</span></td>
   </tr>
   <tr>
@@ -94,7 +91,6 @@
   </tr>
 </table>
 <script>
-
 /** Testing Plus and Minus buttons for months selector **/
 const months_num = document.getElementById("mths");
 mths.innerHTML = months_num.value;
@@ -111,7 +107,6 @@ const decrement = () => {
   const breakevenCheckbox = document.getElementById('breakeven');
   breakevenCheckbox.checked = false;
   months_num.value = Number(months_num.value) - 1
-  console.log(months_num.value);
   localStorage.setItem('months_num', months_num.value);
   calculate();
 }
@@ -123,11 +118,9 @@ document.getElementById('mths').addEventListener('input',() =>  {
   const breakevenCheckbox = document.getElementById('breakeven');
   breakevenCheckbox.checked = false;
   });
-
-
 /** Load a few required variables from localStorage **/
-var avgcheck = parseFloat(localStorage.getItem('che_num') || 50);
-var revenue = parseFloat(localStorage.getItem('rev_num') || 0);
+var avgcheck = localStorage.getItem('che_num') || 50;
+var revenue = localStorage.getItem('rev_num') || 0;
 var lifeSpan = parseFloat(localStorage.getItem('life_num') || 7);
 var margin = parseFloat(localStorage.getItem('mar_num') || 50);
 var saasCost = parseFloat(localStorage.getItem('saas_cost') || 0);
@@ -148,13 +141,11 @@ function loadVar()  {
     breakevenCheckbox.checked = true;}
   breakeven();
 }
-
 /** Listen for changing tab click **/
 document.getElementById("tab1").addEventListener("click",() =>  {
     window.open("index.html", "_self");});
 document.getElementById("tab3").addEventListener("click",() =>  {
     window.open("margin.html", "_self");});
-
 /** Listen for lifespan breakeven checkbox and update accordingly **/
 document.getElementById("breakeven").addEventListener("click",() =>  {
   const breakevenCheckbox = document.getElementById('breakeven');
@@ -174,15 +165,14 @@ function calculate()  {
 const breakevenCheckbox = document.getElementById('breakeven');
 const isChecked = breakevenCheckbox.checked;
 let lifeSpan = localStorage.getItem('life_num') || 7;
-let revenue = localStorage.getItem('rev_num') || 0;
-let avgcheck = localStorage.getItem('che_num') || 50;
-let weeklyTrans = (revenue / avgcheck) / 52;
-let monthlyTrans = (revenue / avgcheck) / 12;
-let annualTrans = (revenue / avgcheck); 
+let revenue = convertString(localStorage.getItem('rev_num') || 0);
+let avgcheck = convertString(localStorage.getItem('che_num') || 50);
+let weeklyTrans = (parseFloat(revenue) / parseFloat(avgcheck)) / 52;
+let monthlyTrans = (parseFloat(revenue) / parseFloat(avgcheck)) / 12;
+let annualTrans = (parseFloat(revenue) / parseFloat(avgcheck)); 
 let totalTrans = monthlyTrans * (mths.value);
 let monthly_tot = (parseFloat(saasCost) + parseFloat(suppCost) + parseFloat(creaCost) + parseFloat(pwrCost));
 let adSalesMth = ((parseFloat(months_num.value) * parseFloat(monthly_tot)) + upfront_tot) / (parseFloat(margin)/100);
-console.log(months_num.value);
 localStorage.setItem('adSales_mth', adSalesMth);
 let adprofit = ((parseFloat(months_num.value) * parseFloat(monthly_tot)) + upfront_tot);
 let requiredLiftD =  adSalesMth/totalTrans;
@@ -197,8 +187,8 @@ let mthsalesprofit = ad_mthsales * (margin / 100);
 let mthlyNet = mthsalesprofit - monthly_tot;
 document.getElementById("opera").innerHTML = formatCurrencyLocal(parseFloat(monthly_tot).toFixed(2));
 document.getElementById("capex").innerHTML = formatCurrencyLocal(parseFloat(upfront_tot).toFixed(2));
-document.getElementById("avgchk").innerHTML = formatCurrencyLocal(parseFloat(avgcheck).toFixed(2));
-document.getElementById("anrev").innerHTML = formatCurrencyLocal(parseFloat(revenue).toFixed(2));
+document.getElementById("avgchk").innerHTML = formatCurrencyLocal(avgcheck);
+document.getElementById("anrev").innerHTML = formatCurrencyLocal(revenue);
 document.getElementById("ad_mthsales").innerHTML = formatCurrencyLocal(parseFloat(ad_mthsales).toFixed(2));
 document.getElementById("mthsalesprofit").innerHTML = formatCurrencyLocal(parseFloat(mthsalesprofit).toFixed(2));
 document.getElementById("mthlyNet").innerHTML = formatCurrencyLocal(parseFloat(mthlyNet).toFixed(2));
@@ -211,8 +201,7 @@ document.getElementById("checkP").innerHTML = '% ' + ((requiredLiftP.toFixed(4))
 document.getElementById('period').innerHTML = parseFloat(lifeSpan).toFixed(0);
 document.getElementById("profit").innerHTML = formatCurrencyLocal(profit.toFixed(2));
 }
-
-// The formatCurrencyLocal function to convert value to currency with proper decimals and commas
+// The formatCurrencyLocal function to convert value to currency string with proper decimals and commas.
 function formatCurrencyLocal(num) {
     // Remove non-numeric characters from the input value
     let value = num.replace(/[^\d]+/g, '');
@@ -226,6 +215,17 @@ function formatCurrencyLocal(num) {
     // Update the input value with the formatted value and add $ symbol
     num = "$"+formattedValue;
     return num;
+}
+function convertString(stringNum) {
+    // Remove non-numeric characters from the input value
+    let value = stringNum.replace(/[^\d]+/g, '');
+    // Split the value into whole and decimal parts
+    const wholePart = value.slice(0, -2);
+    const decimalPart = value.slice(-2);
+    let formattedValue = wholePart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    // Add the decimal point and the last two digits
+    formattedValue = wholePart+`.${decimalPart}`;
+    return formattedValue;
 }
 /** Function to set months at the lifespan break even if checkbox is selected **/
 function breakeven()  {
