@@ -55,8 +55,10 @@ tr, td {
 
 }
 .QtyNum {
-  width: 50px;
-  border-radius: 3px;
+  width: 40px;
+  height: 28px;
+  text-align: center;
+  border-radius: 0px;
 }
 
 input[type=text]  {
@@ -76,7 +78,7 @@ input[type=text]  {
 #mths::-webkit-outer-spin-button,
 #increase::-webkit-inner-spin-button,
 #increase::-webkit-outer-spin-button
- {
+{
   opacity: 0;
 }
 
@@ -91,6 +93,8 @@ input {
 }
 .spinner {
   border: solid 1px lightgrey;
+  width: 30px;
+  height: 30px;
 }
 .spinner:hover {
   background: lightgrey;
@@ -167,4 +171,10 @@ input[type="range"]:focus::-moz-range-thumb {
   font-size: 26px;    
   width: 50px;
   text-align: center;
+}
+#scpower, #mppower  {
+  width: 65px;
+}
+#revenue  {
+  width: 150px;
 }
