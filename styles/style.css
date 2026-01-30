@@ -55,11 +55,12 @@ tr, td {
 
 }
 .QtyNum {
-  width: 40px;
+  width: 80px;
   height: 28px;
   text-align: center;
   border-radius: 0px;
-}
+  padding-left: 10px;
+  }
 
 input[type=text]  {
   width: 100px;
@@ -178,4 +179,3 @@ input[type="range"]:focus::-moz-range-thumb {
 #revenue  {
   width: 150px;
 }
-
