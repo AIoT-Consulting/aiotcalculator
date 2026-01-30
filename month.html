@@ -91,7 +91,7 @@
   </tr>
 </table>
 <script>
-/** Testing Plus and Minus buttons for months selector **/
+/** Monitor the Plus and Minus buttons for the months selector **/
 const months_num = document.getElementById("mths");
 mths.innerHTML = months_num.value;
 const increment = () => {
@@ -159,22 +159,21 @@ document.getElementById("breakeven").addEventListener("click",() =>  {
     breakevenCheckbox.checked = false;
   }
   breakeven();});
-
 /** Calculate total and display **/
 function calculate()  {
 const breakevenCheckbox = document.getElementById('breakeven');
 const isChecked = breakevenCheckbox.checked;
-let lifeSpan = localStorage.getItem('life_num') || 7;
+let lifeSpan = parseFloat(localStorage.getItem('life_num') || 7);
 let revenue = convertString(localStorage.getItem('rev_num') || 0);
 let avgcheck = convertString(localStorage.getItem('che_num') || 50);
-let weeklyTrans = (parseFloat(revenue) / parseFloat(avgcheck)) / 52;
-let monthlyTrans = (parseFloat(revenue) / parseFloat(avgcheck)) / 12;
-let annualTrans = (parseFloat(revenue) / parseFloat(avgcheck)); 
+let weeklyTrans = (revenue / avgcheck) / 52;
+let monthlyTrans = (revenue / avgcheck) / 12;
+let annualTrans = (revenue / avgcheck);
 let totalTrans = monthlyTrans * (mths.value);
-let monthly_tot = (parseFloat(saasCost) + parseFloat(suppCost) + parseFloat(creaCost) + parseFloat(pwrCost));
-let adSalesMth = ((parseFloat(months_num.value) * parseFloat(monthly_tot)) + upfront_tot) / (parseFloat(margin)/100);
+let monthly_tot = saasCost + suppCost + creaCost + pwrCost;
+let adSalesMth = ((parseFloat(months_num.value) * monthly_tot) + upfront_tot) / (margin / 100);
 localStorage.setItem('adSales_mth', adSalesMth);
-let adprofit = ((parseFloat(months_num.value) * parseFloat(monthly_tot)) + upfront_tot);
+let adprofit = ((parseFloat(months_num.value) * monthly_tot) + upfront_tot);
 let requiredLiftD =  adSalesMth/totalTrans;
 if(requiredLiftD == Infinity || isNaN(requiredLiftD)){requiredLiftD = 0;}
 let requiredLiftP =  requiredLiftD / parseFloat(avgcheck);
