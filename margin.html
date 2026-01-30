@@ -18,13 +18,14 @@
 <h2>Store Operating Conditions</h2>
 <table class="tg">
 <tr>
-  <td class="item" colspan="2">
-      <legend for="increase">PERCENT INCREASE VS MONTHS</legend>
-      <input type="number" class="textbox" id="increase" name="increase" min="0" max="100" step="0.01" value="1.2"></td>
+  <td class="item" colspan="2">PERCENT INCREASE VS MONTHS:
+  <button class="spinner decrement">-</button>
+  <input type="number" class="QtyNum" id="increase" name="increase" min="0" max="100" step="0.01" value="1.2">
+  <button class="spinner increment">+</button>
+  </td>
 </tr>
 <tr>
-<td class="item" colspan="2">
-      <legend for="breakeven">Use LifeSpan as Break Even</legend>
+<td class="item" colspan="2">Use LifeSpan as Break Even
       <input type="checkbox" class="textbox" id="breakeven" name="breakeven"></td>
 </tr>
 </table>
@@ -74,18 +75,49 @@
     <td><span id="mthlyNet">...</span> </td>
   </tr>
   <tr>
+    <td>Additional Profit Required:  </td>
+    <td><span id="adprofit"> ...</span></td>
+  </tr>
+  <tr>
+    <td>Additional Sales Required:  </td>
+    <td><span id="adsales"> ...</span></td>
+  </tr>
+  <tr>
     <td>Months Required to Break Even: </td>
     <td id="mth"><span id="mthreq"> ...</span></td>
  </tr>
   <tr>
-    <td><div>Profit Store is MAKES Over<br><span id="period">...</span> Year Equipment Lifspan:  </div></td>
+    <td><div>Profit Over <span id="period">...</span> Year Equipment Lifspan:  </div></td>
     <td><span id="profit">...</span> </td>
   </tr>
 </table>
 <script>
+/** Monitor the Plus and Minus buttons for the months selector **/
+let increase_num = document.getElementById("increase");
+increase.innerHTML = increase_num.value;
+const increment = () => {
+  localStorage.setItem('brevchkbxmt', false);
+  const breakevenCheckbox = document.getElementById('breakeven');
+  breakevenCheckbox.checked = false;
+  increase_num.value = (Number(increase_num.value) + 0.01).toFixed(2);
+  localStorage.setItem('increase_num', increase_num.value);
+  calculate();
+}
+const decrement = () => {
+  localStorage.setItem('brevchkbxmt', false);
+  const breakevenCheckbox = document.getElementById('breakeven');
+  breakevenCheckbox.checked = false;
+  increase_num.value = (Number(increase_num.value) - 0.01).toFixed(2);
+  if(increase_num.value < 0) {
+    increase_num.value = (0).toFixed(2);}
+  localStorage.setItem('increase_num', increase_num.value);
+  calculate();
+}
+document.querySelector('.spinner.increment').addEventListener('click', increment)
+document.querySelector('.spinner.decrement').addEventListener('click', decrement)
 /** Load a few required variables from localStorage **/
-var avgcheck = parseFloat(localStorage.getItem('che_num') || 50);
-var revenue = parseFloat(localStorage.getItem('rev_num') || 0);
+var avgcheck = convertString(localStorage.getItem('che_num') || 15);
+var revenue = convertString(localStorage.getItem('rev_num') || 100000);
 var lifeSpan = parseFloat(localStorage.getItem('life_num') || 7);
 var margin = parseFloat(localStorage.getItem('mar_num') || 50);
 var saasCost = parseFloat(localStorage.getItem('saas_cost') || 0);
@@ -112,7 +144,6 @@ document.getElementById("tab1").addEventListener("click",() =>  {
 document.getElementById("tab2").addEventListener("click",() =>  {
     window.open("month.html", "_self");}); 
 /** Listen for changes in the input fields and update accordingly **/
-let increase_num = document.getElementById("increase");
 increase.innerHTML = increase_num.value;
 increase.onfocus = function() {
   increase_num.select();
@@ -164,8 +195,12 @@ function calculate()    {
   let mthals = (lifeSpan*12) - months_req;
   let capex_pb = upfront_tot - Math.abs(mthlyNet * mthals);
   if (mthals >= 0)  {capex_pb = upfront_tot;}
+  /** Calculate additional profit required **/
+  let adprofit = ((months_req * parseFloat(monthly_tot)) + upfront_tot);
+  /** Calculate additional sales required **/
+  let adSalesMth = ((months_req * parseFloat(monthly_tot)) + upfront_tot) / (parseFloat(margin)/100);
   /** Display results on page **/
-  document.getElementById("anrev").innerHTML = formatCurrencyLocal(revenue.toFixed(2));
+  document.getElementById("anrev").innerHTML = formatCurrencyLocal(revenue);
   document.getElementById("weekly").innerHTML = weeklyTrans.toFixed(0);
   document.getElementById("monthly").innerHTML = monthlyTrans.toFixed(0);
   document.getElementById("opera").innerHTML = formatCurrencyLocal(parseFloat(monthly_tot).toFixed(2));
@@ -175,7 +210,7 @@ function calculate()    {
   else  {
     document.getElementById("capexpb").innerHTML = "$0.00";
   }
-  document.getElementById("avgchk").innerHTML = formatCurrencyLocal(avgcheck.toFixed(2));
+  document.getElementById("avgchk").innerHTML = formatCurrencyLocal(avgcheck);
   document.getElementById("increv").innerHTML = '$ ' + increvenue.toFixed(4);
   document.getElementById("ad_mthsales").innerHTML = formatCurrencyLocal(parseFloat(ad_mthsales).toFixed(2));
   document.getElementById("mthsalesprofit").innerHTML = formatCurrencyLocal(parseFloat(mthsalesprofit).toFixed(2));
@@ -195,13 +230,14 @@ function calculate()    {
     document.getElementById("mthlyNet").innerHTML = formatCurrencyLocal(parseFloat(mthlyNet).toFixed(2));
     document.getElementById("mthreq").innerHTML = months_req.toFixed(2);
   }
+  document.getElementById("adprofit").innerHTML = formatCurrencyLocal(adprofit.toFixed(2));
+  document.getElementById("adsales").innerHTML = formatCurrencyLocal(adSalesMth.toFixed(2));
   document.getElementById("period").innerHTML = lifeSpan;
   if (mthals > 0 && mthlyNet > 0) {
     tdmth.style.backgroundColor = "green";}
   else{
     tdmth.style.backgroundColor = "red";
   }
-  
   if (months_req < (lifeSpan*12)) {
     document.getElementById("profit").innerHTML = formatCurrencyLocal(parseFloat(profit).toFixed(2));}
   else  { 
@@ -223,6 +259,17 @@ function formatCurrencyLocal(num) {
     num = "$"+formattedValue;
     return num;
 }
+function convertString(stringNum) {
+    // Remove non-numeric characters from the input value
+    let value = stringNum.replace(/[^\d]+/g, '');
+    // Split the value into whole and decimal parts
+    const wholePart = value.slice(0, -2);
+    const decimalPart = value.slice(-2);
+    let formattedValue = wholePart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    // Add the decimal point and the last two digits
+    formattedValue = wholePart+`.${decimalPart}`;
+    return formattedValue;
+}
 /** Function to set months at the lifespan break even if checkbox is selected **/
 function breakeven()  {
   let monthly_tot = (saasCost + suppCost + creaCost + pwrCost);
@@ -231,7 +278,7 @@ function breakeven()  {
   const breakevenCheckbox = document.getElementById('breakeven');
   const isChecked = breakevenCheckbox.checked;
   if(isChecked) {
-    increase_num.value = (((((upfront_tot +  (lifeSpan * 12 * monthly_tot))/(monthlyTrans * lifeSpan * 12))/avgcheck))/(margin/10000)).toFixed(6);
+    increase_num.value = (((((upfront_tot +  (lifeSpan * 12 * monthly_tot))/(monthlyTrans * lifeSpan * 12))/avgcheck))/(margin/10000)).toFixed(2);
   }
   else{
     increase_num.value = localStorage.getItem('increase_num') || 2.0;
