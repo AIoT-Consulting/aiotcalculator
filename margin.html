@@ -31,63 +31,63 @@
 </table>
 <table class="tg">
   <tr>
-    <td>Annual Revenue:  </td>
+    <td class="firstColumn">Annual Revenue:  </td>
     <td><span id="anrev"> ...</span></td>
   </tr>
   <tr>
-    <td>Weekly transaction:  </td>
+    <td class="firstColumn">Weekly transaction:  </td>
     <td><span id="weekly"> ...</span></td>
   </tr>
   <tr>
-    <td>Monthly transaction:  </td>
+    <td class="firstColumn">Monthly transaction:  </td>
     <td><span id="monthly"> ...</span></td>
   </tr>
   <tr>
-    <td>Monthly Operating:  </td>
+    <td class="firstColumn">Monthly Operating:  </td>
     <td><span id="opera"> ...</span></td>
   </tr>
   <tr>
-    <td>CapEx & Labor:  </td>
+    <td class="firstColumn">CapEx & Labor:  </td>
     <td><span id="capex"> ...</span></td>
   </tr>
   <tr>
-    <td>CapEx & Labor (Paided Back):  </td>
+    <td class="firstColumn">CapEx & Labor (Paided Back):  </td>
     <td><span id="capexpb"> ...</span></td>
   </tr>
     <tr>
-    <td>Average Check:  </td>
+    <td class="firstColumn">Average Check:  </td>
     <td><span id="avgchk"> ...</span></td>
   </tr>
   <tr>
-    <td>Incremental $ Revenue (per trans):</td>
+    <td class="firstColumn">Incremental $ Revenue (per trans):</td>
     <td><span id="increv"> ...</span></td>
   </tr>
   <tr>
-    <td>Additional Monthly Sales Generated:</td>
+    <td class="firstColumn">Additional Monthly Sales Generated:</td>
     <td><span id="ad_mthsales">...</span> </td>
   </tr>
   <tr>
-    <td>Additional Monthly Sales Profit:</td>
+    <td class="firstColumn">Additional Monthly Sales Profit:</td>
     <td id="amsp"><span id="mthsalesprofit">...</span> </td>
   </tr>
   <tr>
-    <td>Monthly Profit minus Monthly Operating (Net Profit):</td>
+    <td class="firstColumn">Monthly Net Profit:</td>
     <td><span id="mthlyNet">...</span> </td>
   </tr>
   <tr>
-    <td>Additional Profit Required:  </td>
+    <td class="firstColumn">Additional Profit Required:  </td>
     <td><span id="adprofit"> ...</span></td>
   </tr>
   <tr>
-    <td>Additional Sales Required:  </td>
+    <td class="firstColumn">Additional Sales Required:  </td>
     <td><span id="adsales"> ...</span></td>
   </tr>
   <tr>
-    <td>Months Required to Break Even: </td>
+    <td class="firstColumn">Months Required to Break Even: </td>
     <td id="mth"><span id="mthreq"> ...</span></td>
  </tr>
   <tr>
-    <td><div>Profit Over <span id="period">...</span> Year Equipment Lifspan:  </div></td>
+    <td class="firstColumn"><div>Profit Over <span id="period">...</span> Year Equipment Lifspan:  </div></td>
     <td><span id="profit">...</span> </td>
   </tr>
 </table>
@@ -278,7 +278,7 @@ function breakeven()  {
   const breakevenCheckbox = document.getElementById('breakeven');
   const isChecked = breakevenCheckbox.checked;
   if(isChecked) {
-    increase_num.value = (((((upfront_tot +  (lifeSpan * 12 * monthly_tot))/(monthlyTrans * lifeSpan * 12))/avgcheck))/(margin/10000)).toFixed(2);
+    increase_num.value = (((((upfront_tot +  (lifeSpan * 12 * monthly_tot))/(monthlyTrans * lifeSpan * 12))/avgcheck))/(margin/10000)).toFixed(6);
   }
   else{
     increase_num.value = localStorage.getItem('increase_num') || 2.0;
