@@ -18,55 +18,55 @@
 <h2>Hardware Costs</h2>
 <table class="tg">
 <tr>
-    <td>
+    <td class="firstColumn">
       <legend for="lifeSlider">Equipment Lifespan</legend>
       <input type="range" name="lifeSlider" id="lifeSlider" min="3" max="10" step="1" value="7">
     </td>
     <td><div><span id="lifeOutput"></span> years</div></td>
 </tr>
 <tr>
-    <td>
+    <td class="firstColumn">
       <legend for="screenSlider">Number of displays:</legend>
       <input type="range" name="screenSlider" id="screenSlider" min="1" max="20" step="1" value="3">
     </td>
     <td><div><span id="screenOutput"></span> units</div></td>
 </tr>
 <tr>
-    <td>Display Cost (per/unit):</td>
+    <td class="firstColumn">Display Cost (per/unit):</td>
     <td><input type="text" name="screencost" id="screencost" placeholder="0.00" value="0"></td>
 </tr>
 <tr>
-    <td>Media Player Cost (per/unit):</td>
+    <td class="firstColumn">Media Player Cost (per/unit):</td>
     <td><input type="text" name="playercost" id="playercost" placeholder="0" value="0"></td>
 </tr>
 <tr>
-    <td>Mounts/Cables/Other Cost (per/unit):</td>
+    <td class="firstColumn">Mounts/Cables/Other Cost (per/unit):</td>
     <td><input type="text" name="mcocost" id="mcocost" placeholder="0" value="0" pattern="\d*"></td>
 </tr>
 <tr>
-    <td>_______________________________</td>
-</tr>
+    <td class="columnLine">¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯</td>
+  </tr>
 <tr>
-    <td>Total Hardware Costs:</td>
+    <td class="firstColumn">Total Hardware Costs:</td>
     <td><span id="hardware">...</span></td>
 </tr>
 </table>
 <h2>Labor Costs</h2>
 <table class="tg">
 <tr>
-    <td>Hardware Installation Cost (total):</td>
+    <td class="firstColumn">Hardware Installation Cost (total):</td>
     <td><input type="text" name="inslabcost" id="inslabcost" placeholder="0.00" value="0"></td>
 </tr>
 <tr>
-    <td>Electrical Installation Cost:</td>
+    <td class="firstColumn">Electrical Installation Cost:</td>
     <td><input type="text" name="elelabcost" id="elelabcost" placeholder="0" value="0"></td>
 </tr>
 <tr>
-    <td>Other Labor Costs:</td>
+    <td class="firstColumn">Other Labor Costs:</td>
     <td><input type="text" name="othlabcost" id="othlabcost" placeholder="0" value="0" pattern="\d*"></td>
 </tr>
 <tr>
-    <td>_______________________________</td>
+    <td class="columnLine">¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯</td>
 </tr>
 <tr>
     <td>Total Labor Costs:</td>
@@ -76,51 +76,51 @@
 <h2>Monthly Operating Costs</h2>
 <table class="tg">
 <tr>
-    <td>
+    <td class="firstColumn">
       <legend for="daySlider">Days per week open:</legend>
       <input type="range" name="daySlider" id="daySlider" min="1" max="7" step="1" value="5">
     </td>
     <td><div><span id="dayOutput"></span> days</div></td>
 </tr>
 <tr>
-    <td>
+    <td class="firstColumn">
       <legend for="hourSlider">Hours per wek open:</legend>
       <input type="range" name="hourSlider" id="hourSlider" min="1" max="24" step="1" value="8">
     </td>
     <td><div><span id="hourOutput"></span> hours</div></td>
 </tr>
   <tr>
-    <td>Monthly Software Cost (SaaS):</td>
+    <td class="firstColumn">Monthly Software Cost (SaaS):</td>
     <td><input type="text" name="saascost" id="saascost" placeholder="0" value="" pattern="\d*"></td>
 </tr>
 <tr>
-    <td>Monthly Support Cost (if applicable):</td>
+    <td class="firstColumn">Monthly Support Cost (if applicable):</td>
     <td><input type="text" name="suppcost" id="suppcost" placeholder="0" value="0" pattern="\d*"></td>
 </tr>
 <tr>
-    <td>Monthly Creative Cost (if applcable):</td>
+    <td class="firstColumn">Monthly Creative Cost (if applcable):</td>
     <td><input type="text" name="creacost" id="creacost" placeholder="0" value="0" pattern="\d*"></td>
 </tr>
 <tr>
-    <td>
+    <td class="firstColumn">
       <legend for="hydroSlider">Electricity Costs:</legend>
       <input type="range" name="hydroSlider" id="hydroSlider" min="0.00" max="0.80" step="0.01" value="0.29">
     </td>
     <td><div><span id="hydroOutput"></span> (KwHr)</div></td>
 <tr>
-    <td>Display Consumption (watts):</td>
+    <td class="firstColumn">Display Consumption (watts):</td>
     <td><input type="number" name="scpower" id="scpower" placeholder="0" value="" pattern="\d*"> w</td>
 </tr>
 <tr>
-    <td>Media Player Consumption (watts):</td>
+    <td class="firstColumn">Media Player Consumption (watts):</td>
     <td><input type="number" name="mppower" id="mppower" placeholder="0" value="" pattern="\d*"> w</td>
 </tr>
 <tr>
-    <td>Total Monthly Consumption Cost:</td>           
+    <td class="firstColumn">Total Monthly Consumption Cost:</td>           
     <td><span id="totpower">...</span></td>
 </tr>
 <tr>
-    <td>_______________________________</td>
+    <td class="columnLine">¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯</td>
 </tr>
 <tr>
     <td>Total Monthly Operating Costs:</td> 
