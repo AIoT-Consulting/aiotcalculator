@@ -10,9 +10,19 @@ body{
   margin: auto auto;
   min-width: 800px; 
 }
-
+.item {
+  width: 536px;
+}
 tr, td {
-  border: 1px solid grey;
+  border: 0px solid grey;
+}
+.firstColumn  {
+  width: 420px;
+  height: 35px;
+}
+.columnLine  {
+  width: 420px;
+  height: 1px;
 }
 .tab    {
     padding-top: 30px;
@@ -59,8 +69,7 @@ tr, td {
   height: 28px;
   text-align: center;
   border-radius: 0px;
-  padding-left: 10px;
-  }
+}
 
 input[type=text]  {
   width: 100px;
@@ -80,7 +89,8 @@ input[type=text]  {
 #increase::-webkit-inner-spin-button,
 #increase::-webkit-outer-spin-button
 {
-  opacity: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .number-input {
