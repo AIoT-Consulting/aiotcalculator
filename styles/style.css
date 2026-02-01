@@ -119,7 +119,7 @@ input {
 
 
 /** CSS to modify the knob of the sliders to aan AIoT Logo **/
-legend {
+legend{
   padding-bottom: 5px;
 }
 input[type="range"] {
@@ -192,4 +192,3 @@ input[type="range"]:focus::-moz-range-thumb {
 #revenue  {
   width: 150px;
 }
-
