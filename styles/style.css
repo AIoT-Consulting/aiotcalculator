@@ -8,13 +8,13 @@ body{
   width: 80%;
   max-width: 1000px;
   margin: auto auto;
-  min-width: 800px; 
+  min-width: 600px; 
 }
 .item {
   width: 536px;
 }
 tr, td {
-  border: 0px solid grey;
+  border: 1px solid grey;
 }
 .firstColumn  {
   width: 420px;
