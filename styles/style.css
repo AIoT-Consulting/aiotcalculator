@@ -192,3 +192,9 @@ input[type="range"]:focus::-moz-range-thumb {
 #revenue  {
   width: 150px;
 }
+/* Use a media query to add a break point at 800px: */
+@media screen and (max-width: 1000px) {
+  .left, .main, .right {
+   font-size: 8px;
+  }
+}
